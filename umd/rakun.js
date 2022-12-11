@@ -1712,6 +1712,11 @@
       _classCallCheck(this, RakunStaticFluxImpl);
     }
     _createClass(RakunStaticFluxImpl, [{
+      key: "fromCallBack",
+      value: function fromCallBack() {
+        return this.fromSourceBuild(sourceBuild$1.fromCallback.apply(sourceBuild$1, arguments));
+      }
+    }, {
       key: "fromSourceBuild",
       value: function fromSourceBuild(sourceBuild) {
         return new RakunFluxImpl(sourceBuild);

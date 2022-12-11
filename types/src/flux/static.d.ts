@@ -1,7 +1,8 @@
 import { UnpackArrayType } from "../types";
 import { RakunFlux, RakunStaticFlux } from "./interface";
-import { RakunSourceBuild } from "../sourceBuild";
+import { RakunCallback, RakunSourceBuild } from "../sourceBuild";
 export declare class RakunStaticFluxImpl implements RakunStaticFlux {
+    fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunFlux<T>;
     fromSourceBuild<T>(sourceBuild: RakunSourceBuild<T>): RakunFlux<T>;
     fromPromise<T>(promise: Promise<T[]>): RakunFlux<T>;
     fromArray<R>(values: R[]): RakunFlux<R>;

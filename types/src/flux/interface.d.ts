@@ -1,9 +1,10 @@
 import { RakunContextManager } from "../context/interface";
 import { RakunMono } from "../mono";
-import { RakunSourceBuild, RakunSource, ReturnUnzipWhen } from "../sourceBuild/interface";
+import { RakunSourceBuild, RakunSource, ReturnUnzipWhen, RakunCallback } from "../sourceBuild/interface";
 import { ErrorConstructor, UnpackArrayType } from "../types";
 import { WrappedValue_OPAQUE } from "../wrapped";
 export type RakunStaticFlux = {
+    fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunFlux<T>;
     fromArray<R>(value: R[]): RakunFlux<R>;
     fromPromise<T>(promise: Promise<T[]>): RakunFlux<T>;
     fromSourceBuild<T>(source: RakunSourceBuild<T>): RakunFlux<T>;
