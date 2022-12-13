@@ -4,7 +4,6 @@ import { Void, WrappedValue_OPAQUE } from "../wrapped";
 import { ErrorConstructor } from "../types";
 import { RakunMono } from "./interface";
 import { RakunFlux } from "../flux";
-export declare const fromSourceBuild: <T>(sourceBuild: RakunSourceBuild<T>) => RakunMono<T>;
 export declare class RakunMonoImpl<T> implements RakunMono<T> {
     sourceBuild: RakunSourceBuild<T>;
     readonly [WrappedValue_OPAQUE] = "mono";

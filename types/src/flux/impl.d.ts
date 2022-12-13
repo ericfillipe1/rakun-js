@@ -4,11 +4,10 @@ import { RakunSource, RakunSourceBuild, ReturnUnzip, ReturnUnzipWhen } from "../
 import { ErrorConstructor } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
 import { RakunFlux } from "./interface";
-export declare const fromSourceBuild: <T>(sourceBuild: RakunSourceBuild<T>) => RakunFlux<T>;
 export declare class RakunFluxImpl<T> implements RakunFlux<T> {
     sourceBuild: RakunSourceBuild<T>;
-    readonly [WrappedValue_OPAQUE] = "flux";
     constructor(sourceBuild: RakunSourceBuild<T>);
+    [WrappedValue_OPAQUE]: "flux";
     then<Source extends (RakunMono<any> | RakunFlux<any>)>(source?: Source): Source | RakunMono<typeof Void>;
     block(contextManager?: RakunContextManager): Promise<T[]>;
     array(): RakunMono<T[]>;
