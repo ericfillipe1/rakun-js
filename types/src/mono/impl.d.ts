@@ -3,11 +3,13 @@ import { RakunSource, RakunSourceBuild, ReturnUnzip, ReturnUnzipWhen } from "../
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
 import { ErrorConstructor } from "../types";
 import { RakunMono } from "./interface";
+import { RakunFlux } from "../flux";
 export declare const fromSourceBuild: <T>(sourceBuild: RakunSourceBuild<T>) => RakunMono<T>;
 export declare class RakunMonoImpl<T> implements RakunMono<T> {
     sourceBuild: RakunSourceBuild<T>;
     readonly [WrappedValue_OPAQUE] = "mono";
     constructor(sourceBuild: RakunSourceBuild<T>);
+    then<Source extends (RakunMono<any> | RakunFlux<any>)>(source?: Source): Source | RakunMono<typeof Void>;
     asyncIterator(ctx: RakunContextManager): AsyncIterator<T, any, undefined>;
     onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunMono<T>): RakunMono<T>;
     doOnNext(handler: (value: T) => any): RakunMono<T>;
@@ -19,7 +21,6 @@ export declare class RakunMonoImpl<T> implements RakunMono<T> {
     pipe<R>(fn: (value: T) => R): RakunMono<R>;
     flatPipe<R>(fn: (value: T) => RakunMono<R>): RakunMono<R>;
     thenReturn<R>(value: R): RakunMono<R>;
-    then<R>(source?: RakunSource<R>): RakunMono<R> | RakunMono<Void>;
     blockFirst(contextManager?: RakunContextManager): Promise<T>;
     filter(fn: (value: T) => boolean): RakunMono<T>;
     flatFilter(fn: (value: T) => RakunMono<boolean>): RakunMono<T>;

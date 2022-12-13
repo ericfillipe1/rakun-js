@@ -6,5 +6,5 @@ export declare class RakunContextManagerImpl implements RakunContextManager {
         value: any;
     }[];
     getValue<R>(context: RakunContext<R>): Promise<R>;
-    setValue<R>(context: RakunContext<R>, value: R): Promise<Void>;
+    setValue<R>(context: RakunContext<R>, value: R): Promise<typeof Void>;
 }

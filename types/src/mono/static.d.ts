@@ -4,7 +4,7 @@ import { RakunMono, RakunStaticMono } from "./interface";
 export declare class StaticMonoImpl implements RakunStaticMono {
     fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunMono<T>;
     fromSourceBuild<T>(p: RakunSourceBuild<T>): RakunMono<T>;
-    returnVoid(): RakunMono<Void>;
+    then(): RakunMono<typeof Void>;
     empty<T>(): RakunMono<T>;
     zip<T extends RakunMono<any>[]>(...monoArray: T): RakunMono<ReturnUnzip<T>>;
     just<T>(value: T): RakunMono<T>;

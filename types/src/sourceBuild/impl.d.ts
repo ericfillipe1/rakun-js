@@ -16,7 +16,7 @@ export declare class RakunSourceBuildImpl<T> implements RakunSourceBuild<T> {
     flatFilter(fn: (value: T) => RakunSource<boolean>): RakunSourceBuild<T>;
     filter(fn: (value: T) => boolean): RakunSourceBuild<T>;
     thenReturn<R>(value: R): RakunSourceBuild<R>;
-    then<R>(source?: RakunSource<R>): RakunSourceBuild<R> | RakunSourceBuild<Void>;
+    then<R>(source?: RakunSource<R>): RakunSourceBuild<R> | RakunSourceBuild<typeof Void>;
     onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSourceBuild<T>): RakunSourceBuild<T>;
     doOnNext(handler: (value: T) => any): RakunSourceBuild<T>;
     doOnError(handler: (error: any) => any): RakunSourceBuild<T>;

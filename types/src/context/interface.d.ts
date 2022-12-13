@@ -5,9 +5,9 @@ export interface RakunStaticContext {
 }
 export interface RakunContext<T> {
     get(): RakunMono<T>;
-    define(value: T): RakunMono<Void>;
+    define(value: T): RakunMono<typeof Void>;
 }
 export interface RakunContextManager {
     getValue<R>(context: RakunContext<R>): Promise<R>;
-    setValue<R>(context: RakunContext<R>, value: R): Promise<Void>;
+    setValue<R>(context: RakunContext<R>, value: R): Promise<typeof Void>;
 }

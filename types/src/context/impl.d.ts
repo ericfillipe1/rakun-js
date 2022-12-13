@@ -5,5 +5,5 @@ export declare class RakunContextImpl<T> implements RakunContext<T> {
     defualtValue: T;
     constructor(defualtValue: T);
     get(): RakunMono<T>;
-    define(value: T): RakunMono<Void>;
+    define(value: T): RakunMono<typeof Void>;
 }

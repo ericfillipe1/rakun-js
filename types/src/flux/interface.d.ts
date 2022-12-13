@@ -2,7 +2,7 @@ import { RakunContextManager } from "../context/interface";
 import { RakunMono } from "../mono";
 import { RakunSourceBuild, RakunSource, ReturnUnzipWhen, RakunCallback } from "../sourceBuild/interface";
 import { ErrorConstructor, UnpackArrayType } from "../types";
-import { WrappedValue_OPAQUE } from "../wrapped";
+import { Void, WrappedValue_OPAQUE } from "../wrapped";
 export type RakunStaticFlux = {
     fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunFlux<T>;
     fromArray<R>(value: R[]): RakunFlux<R>;
@@ -13,6 +13,8 @@ export type RakunStaticFlux = {
 export interface RakunFlux<T> extends RakunSource<T> {
     readonly [WrappedValue_OPAQUE]: 'flux';
     sourceBuild: RakunSourceBuild<T>;
+    then<Source extends RakunMono<any> | RakunFlux<any>>(source: Source): Source;
+    then(): RakunFlux<typeof Void>;
     zipWhen<R extends ((value: T) => RakunMono<any>)[]>(...monoArrayFn: R): RakunFlux<[T, ...ReturnUnzipWhen<R>]>;
     pipe<R>(fn: (value: T) => R): RakunFlux<R>;
     filter(fn: (value: T) => boolean): RakunFlux<T>;

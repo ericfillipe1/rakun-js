@@ -445,7 +445,7 @@ try {
 }
 
 var WrappedValue_OPAQUE = Symbol();
-var VoidValue = Symbol();
+var Void = Symbol();
 
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
@@ -883,7 +883,7 @@ var RakunSourceBuildImpl = /*#__PURE__*/function () {
   }, {
     key: "then",
     value: function then(source) {
-      if (!source) return this.thenReturn(VoidValue);
+      if (!source) return this.thenReturn(Void);
       var sourceOld = this;
       return fromAsyncIterator(function (ctx) {
         var finish = false;
@@ -1301,10 +1301,10 @@ var StaticSourceBuildImpl = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "returnVoid",
-    value: function returnVoid() {
+    key: "then",
+    value: function then() {
       return fromCallback(function () {
-        return [VoidValue];
+        return [Void];
       });
     }
   }, {
@@ -1412,7 +1412,7 @@ var RakunContextManagerImpl = /*#__PURE__*/function () {
         context: context,
         value: value
       }]);
-      return Promise.resolve(VoidValue);
+      return Promise.resolve(Void);
     }
   }]);
   return RakunContextManagerImpl;
@@ -1428,6 +1428,17 @@ var RakunMonoImpl = /*#__PURE__*/function () {
     _defineProperty(this, WrappedValue_OPAQUE, "mono");
   }
   _createClass(RakunMonoImpl, [{
+    key: "then",
+    value: function then(source) {
+      if (source) {
+        if (source[WrappedValue_OPAQUE] == 'flux') {
+          return fromSourceBuild(this.sourceBuild.then(source));
+        } else {
+          return fromSourceBuild$1(this.sourceBuild.then(source));
+        }
+      } else return fromSourceBuild$1(this.sourceBuild.then());
+    }
+  }, {
     key: "asyncIterator",
     value: function asyncIterator(ctx) {
       return this.sourceBuild.asyncIterator(ctx);
@@ -1483,11 +1494,6 @@ var RakunMonoImpl = /*#__PURE__*/function () {
     key: "thenReturn",
     value: function thenReturn(value) {
       return fromSourceBuild$1(this.sourceBuild.thenReturn(value));
-    }
-  }, {
-    key: "then",
-    value: function then(source) {
-      if (source) return fromSourceBuild$1(this.sourceBuild.then(source));else return fromSourceBuild$1(this.sourceBuild.then());
     }
   }, {
     key: "blockFirst",
@@ -1549,9 +1555,9 @@ var StaticMonoImpl = /*#__PURE__*/function () {
       return fromSourceBuild$1(p);
     }
   }, {
-    key: "returnVoid",
-    value: function returnVoid() {
-      return this.fromSourceBuild(sourceBuild$1.returnVoid());
+    key: "then",
+    value: function then() {
+      return this.fromSourceBuild(sourceBuild$1.then());
     }
   }, {
     key: "empty",
@@ -1593,6 +1599,17 @@ var RakunFluxImpl = /*#__PURE__*/function () {
     _defineProperty(this, WrappedValue_OPAQUE, "flux");
   }
   _createClass(RakunFluxImpl, [{
+    key: "then",
+    value: function then(source) {
+      if (source) {
+        if (source[WrappedValue_OPAQUE] == 'mono') {
+          return fromSourceBuild$1(this.sourceBuild.then(source));
+        } else {
+          return fromSourceBuild(this.sourceBuild.then(source));
+        }
+      } else return fromSourceBuild(this.sourceBuild.then());
+    }
+  }, {
     key: "block",
     value: function block(contextManager) {
       return this.sourceBuild.block(contextManager !== null && contextManager !== void 0 ? contextManager : new RakunContextManagerImpl());
@@ -1696,11 +1713,6 @@ var RakunFluxImpl = /*#__PURE__*/function () {
     value: function thenReturn(value) {
       return fromSourceBuild(this.sourceBuild.thenReturn(value));
     }
-  }, {
-    key: "then",
-    value: function then(source) {
-      if (source) return fromSourceBuild(this.sourceBuild.then(source));else return fromSourceBuild(this.sourceBuild.then());
-    }
   }]);
   return RakunFluxImpl;
 }();
@@ -1796,7 +1808,7 @@ exports.RakunContextImpl = RakunContextImpl;
 exports.RakunFluxImpl = RakunFluxImpl;
 exports.RakunMonoImpl = RakunMonoImpl;
 exports.RakunSourceBuildImpl = RakunSourceBuildImpl;
-exports.VoidValue = VoidValue;
+exports.Void = Void;
 exports.WrappedValue_OPAQUE = WrappedValue_OPAQUE;
 exports.context = context;
 exports["default"] = index;
