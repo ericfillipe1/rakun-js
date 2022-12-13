@@ -14,15 +14,15 @@ export declare class RakunFluxImpl<T> implements RakunFlux<T> {
     asyncIterator(ctx: RakunContextManager): AsyncIterator<T>;
     switchIfEmpty(source: RakunSource<T>): RakunFlux<T>;
     defaultIfEmpty(value: T): RakunFlux<T>;
-    onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunMono<T>): RakunFlux<T>;
+    onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSource<T>): RakunFlux<T>;
     doOnNext(handler: (value: T) => any): RakunFlux<T>;
     doOnError(handler: (error: any) => any): RakunFlux<T>;
-    zipWhen<R extends ((value: T) => RakunMono<any>)[]>(...monoArrayFn: R): RakunFlux<[T, ...ReturnUnzipWhen<R>]>;
+    zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunFlux<[T, ...ReturnUnzipWhen<R>]>;
     zip<R extends RakunMono<any>[]>(...monoArray: R): RakunFlux<[T, ...ReturnUnzip<R>]>;
     pipe<R>(fn: (value: T) => R): RakunFlux<R>;
     flatPipe<R>(fn: (value: T) => RakunSource<R>): RakunFlux<R>;
     filter(fn: (value: T) => boolean): RakunFlux<T>;
-    flatFilter(fn: (value: T) => RakunMono<boolean>): RakunFlux<T>;
+    flatFilter(fn: (value: T) => RakunSource<boolean>): RakunFlux<T>;
     blockFirst(contextManager?: RakunContextManager): Promise<T>;
     thenReturn<R>(value: R): RakunFlux<R>;
 }

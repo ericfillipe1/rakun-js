@@ -1431,6 +1431,11 @@
       _defineProperty(this, WrappedValue_OPAQUE, "mono");
     }
     _createClass(RakunMonoImpl, [{
+      key: "flatPipeMany",
+      value: function flatPipeMany(fn) {
+        return fromSourceBuild$1(this.sourceBuild.flatPipe(fn));
+      }
+    }, {
       key: "then",
       value: function then(source) {
         if (source) {
