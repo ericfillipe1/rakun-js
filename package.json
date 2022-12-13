@@ -1,6 +1,6 @@
 {
   "name": "rakun",
-  "version": "0.0.0-alpha.30",
+  "version": "0.0.0-alpha.31",
   "description": "",
   "types": "./types/src/index.d.ts",
   "main": "cjs/rakun.js",
