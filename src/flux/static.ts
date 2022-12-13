@@ -1,11 +1,14 @@
 
 import { UnpackArrayType } from "../types";
 import { RakunFlux, RakunStaticFlux } from "./interface";
-import sourceBuild, { RakunSourceBuild } from "../sourceBuild";
+import sourceBuild, { RakunCallback, RakunSourceBuild } from "../sourceBuild";
 import { RakunFluxImpl } from "./impl";
 
 
 export class RakunStaticFluxImpl implements RakunStaticFlux {
+    fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunFlux<T> {
+        return this.fromSourceBuild<T>(sourceBuild.fromCallback(...callbacks));
+    }
     fromSourceBuild<T>(sourceBuild: RakunSourceBuild<T>): RakunFlux<T> {
         return new RakunFluxImpl<T>(sourceBuild);
     }

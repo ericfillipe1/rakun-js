@@ -4,7 +4,7 @@
 import { RakunCallback, RakunSourceBuild, ReturnUnzip } from "../sourceBuild";
 import { sourceBuild } from "../sourceBuild/static";
 import { Void } from "../wrapped";
-import { fromSourceBuild } from "./impl";
+import { fromSourceBuild } from "./functions";
 import { RakunMono, RakunStaticMono } from "./interface";
 
 export class StaticMonoImpl implements RakunStaticMono {
@@ -14,8 +14,8 @@ export class StaticMonoImpl implements RakunStaticMono {
     fromSourceBuild<T>(p: RakunSourceBuild<T>): RakunMono<T> {
         return fromSourceBuild(p)
     }
-    returnVoid(): RakunMono<Void> {
-        return this.fromSourceBuild(sourceBuild.returnVoid())
+    then(): RakunMono<typeof Void> {
+        return this.fromSourceBuild(sourceBuild.then())
     }
     empty<T>(): RakunMono<T> {
         return this.fromSourceBuild(sourceBuild.empty())

@@ -1,4 +1,5 @@
 import { RakunContextManager } from "../context/interface"
+import { RakunFlux } from "../flux"
 import { RakunSourceBuild, RakunSource, ReturnUnzip, ReturnUnzipWhen, RakunCallback } from "../sourceBuild/interface"
 import { ErrorConstructor } from "../types"
 import { Void, WrappedValue_OPAQUE } from "../wrapped"
@@ -10,8 +11,8 @@ export interface RakunMono<T> extends RakunSource<T> {
     pipe<R>(fn: (value: T) => R): RakunMono<R>
     flatPipe<R>(fn: (value: T) => RakunMono<R>): RakunMono<R>
     thenReturn<R>(value: R): RakunMono<R>
-    then<R>(source: RakunSource<R>): RakunMono<R>
-    then(): RakunMono<Void>
+    then<Source extends RakunMono<any> | RakunFlux<any>>(source: Source): Source;
+    then(): RakunMono<typeof Void>
     filter(fn: (value: T) => boolean): RakunMono<T>
     flatFilter(fn: (value: T) => RakunMono<boolean>): RakunMono<T>
     blockFirst(contextManager?: RakunContextManager): Promise<T>
@@ -22,7 +23,6 @@ export interface RakunMono<T> extends RakunSource<T> {
     defaultIfEmpty(value: T): RakunMono<T>
 }
 
-
 export type RakunStaticMono = {
 
     zip<T extends RakunMono<any>[]>(...monoArray: T): RakunMono<ReturnUnzip<T>>;
@@ -30,7 +30,7 @@ export type RakunStaticMono = {
     fromSourceBuild<T>(sourceBuild: RakunSourceBuild<T>): RakunMono<T>;
     fromPromise<T>(promise: Promise<T>): RakunMono<T>;
     fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunMono<T>;
-    returnVoid(): RakunMono<Void>;
+    then(): RakunMono<typeof Void>;
     empty<T>(): RakunMono<T>;
     error<T>(error: any): RakunMono<T>;
 

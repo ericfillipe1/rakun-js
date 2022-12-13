@@ -27,7 +27,7 @@ export interface RakunSourceBuild<T> extends RakunSource<T> {
     filter(fn: (value: T) => boolean): RakunSourceBuild<T>
     thenReturn<R>(value: R): RakunSourceBuild<R>
     then<R>(source: RakunSource<R>): RakunSourceBuild<R>
-    then(): RakunSourceBuild<Void>
+    then(): RakunSourceBuild<typeof Void>
     zip<R extends RakunSource<any>[]>(...monoArray: R): RakunSourceBuild<[T, ...ReturnUnzip<R>]>
     zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunSourceBuild<[T, ...ReturnUnzipWhen<R>]>
     pipe<R>(fn: (value: T) => R): RakunSourceBuild<R>
@@ -42,7 +42,7 @@ export interface RakunSourceBuild<T> extends RakunSource<T> {
 
 
 export type RakunStaticSourceBuild = {
-    returnVoid(): RakunSourceBuild<Void>
+    then(): RakunSourceBuild<typeof Void>
     empty<T>(): RakunSourceBuild<T>
     zip<T extends RakunSource<any>[]>(...monoArray: T): RakunSourceBuild<ReturnUnzip<T>>
     just<T>(...promises: Promise<T>[] | T[]): RakunSourceBuild<T>

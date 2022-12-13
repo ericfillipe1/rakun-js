@@ -1,5 +1,5 @@
 
-import { Void, VoidValue } from "../wrapped";
+import { Void } from "../wrapped";
 import { fromCallback, fromAsyncIterator } from "./impl";
 import { RakunSourceBuild, RakunSource, RakunStaticSourceBuild, ReturnUnzip, RakunCallback } from "./interface";
 
@@ -15,8 +15,8 @@ export class StaticSourceBuildImpl implements RakunStaticSourceBuild {
     fromArray<R>(values: R[] | Promise<R[]>): RakunSourceBuild<R> {
         return fromCallback(() => values);
     }
-    returnVoid(): RakunSourceBuild<Void> {
-        return fromCallback<Void>(() => [VoidValue])
+    then(): RakunSourceBuild<typeof Void> {
+        return fromCallback<typeof Void>(() => [Void])
     }
     empty<T>(): RakunSourceBuild<T> {
         return fromCallback(() => [])

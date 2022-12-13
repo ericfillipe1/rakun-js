@@ -5,14 +5,24 @@ import { Void, WrappedValue_OPAQUE } from "../wrapped";
 import { ErrorConstructor } from "../types";
 import { RakunMono } from "./interface";
 import { RakunContextManagerImpl } from "../context/manager";
-
-export const fromSourceBuild = <T>(sourceBuild: RakunSourceBuild<T>): RakunMono<T> => {
-    return new RakunMonoImpl(sourceBuild);
-}
+import { RakunFlux } from "../flux";
+import { fromSourceBuild as fluxFromSourceBuild } from "../flux/functions";
+import { fromSourceBuild } from "./functions";
 
 export class RakunMonoImpl<T> implements RakunMono<T>  {
     readonly [WrappedValue_OPAQUE] = "mono";
     constructor(public sourceBuild: RakunSourceBuild<T>) {
+    }
+    then<Source extends (RakunMono<any> | RakunFlux<any>)>(source?: Source): Source | RakunMono<typeof Void> {
+        if (source)
+            if (source[WrappedValue_OPAQUE] == 'flux') {
+                return fluxFromSourceBuild(this.sourceBuild.then(source)) as any
+            }
+            else {
+                return fromSourceBuild(this.sourceBuild.then(source))
+            }
+        else
+            return fromSourceBuild(this.sourceBuild.then())
     }
 
     asyncIterator(ctx: RakunContextManager): AsyncIterator<T, any, undefined> {
@@ -50,12 +60,6 @@ export class RakunMonoImpl<T> implements RakunMono<T>  {
     }
     thenReturn<R>(value: R): RakunMono<R> {
         return fromSourceBuild(this.sourceBuild.thenReturn(value))
-    }
-    then<R>(source?: RakunSource<R>): RakunMono<R> | RakunMono<Void> {
-        if (source)
-            return fromSourceBuild(this.sourceBuild.then(source))
-        else
-            return fromSourceBuild(this.sourceBuild.then())
     }
     async blockFirst(contextManager?: RakunContextManager): Promise<T> {
         const array = await this.sourceBuild.block(contextManager ?? new RakunContextManagerImpl());

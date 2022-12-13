@@ -1,7 +1,7 @@
 
 import { RakunContextManager } from "../context/interface";
 import { ErrorConstructor } from "../types";
-import { Void, VoidValue, WrappedValue_OPAQUE } from "../wrapped";
+import { Void, WrappedValue_OPAQUE } from "../wrapped";
 import { RakunCallback, RakunCallbackSource, RakunSourceBuild, RakunSource, ReturnUnzip, ReturnUnzipWhen } from "./interface";
 
 export const fromAsyncIterator = <T>(execute: RakunCallbackSource<T>): RakunSourceBuild<T> => {
@@ -11,6 +11,8 @@ export const fromAsyncIterator = <T>(execute: RakunCallbackSource<T>): RakunSour
 export const resolveArray = <T>(array: T[] | T): T[] => {
     return Array.isArray(array) ? array : [array]
 }
+
+
 
 export const fromCallback = <T>(...callbacks: RakunCallback<T>[]): RakunSourceBuild<T> => {
     return fromAsyncIterator((ctx) => {
@@ -194,10 +196,10 @@ export class RakunSourceBuildImpl<T> implements RakunSourceBuild<T> {
             }
         })
     }
-    then<R>(source?: RakunSource<R>): RakunSourceBuild<R> | RakunSourceBuild<Void> {
+    then<R>(source?: RakunSource<R>): RakunSourceBuild<R> | RakunSourceBuild<typeof Void> {
 
         if (!source)
-            return this.thenReturn(VoidValue)
+            return this.thenReturn(Void)
 
         let sourceOld = this;
         return fromAsyncIterator((ctx) => {

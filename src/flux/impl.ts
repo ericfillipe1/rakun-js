@@ -8,24 +8,33 @@ import { RakunSource, RakunSourceBuild, ReturnUnzip, ReturnUnzipWhen } from "../
 import { ErrorConstructor } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
 import { RakunFlux } from "./interface";
-import mono from "../mono";
+import { fromSourceBuild as monoFromSourceBuild } from "../mono/functions";
 import { sourceBuild } from "../sourceBuild/static";
 import { RakunContextManagerImpl } from "../context/manager";
+import { fromSourceBuild } from "./functions";
 
-
-export const fromSourceBuild = <T>(sourceBuild: RakunSourceBuild<T>): RakunFlux<T> => {
-    return new RakunFluxImpl<T>(sourceBuild);
-}
 
 export class RakunFluxImpl<T> implements RakunFlux<T>{
-    readonly [WrappedValue_OPAQUE] = "flux"
     constructor(public sourceBuild: RakunSourceBuild<T>) {
     }
+    [WrappedValue_OPAQUE]: "flux" = 'flux';
+    then<Source extends (RakunMono<any> | RakunFlux<any>)>(source?: Source): Source | RakunMono<typeof Void> {
+        if (source)
+            if (source[WrappedValue_OPAQUE] == 'mono') {
+                return monoFromSourceBuild(this.sourceBuild.then(source)) as any
+            }
+            else {
+                return fromSourceBuild(this.sourceBuild.then(source)) as any
+            }
+        else
+            return fromSourceBuild(this.sourceBuild.then()) as any
+    }
+
     block(contextManager?: RakunContextManager): Promise<T[]> {
         return this.sourceBuild.block(contextManager ?? new RakunContextManagerImpl())
     }
     array(): RakunMono<T[]> {
-        return mono.fromSourceBuild(sourceBuild.fromCallback(async (ctx) =>
+        return monoFromSourceBuild(sourceBuild.fromCallback(async (ctx) =>
             [await this.sourceBuild.block(ctx)]
         ));
     }
@@ -78,12 +87,6 @@ export class RakunFluxImpl<T> implements RakunFlux<T>{
 
     thenReturn<R>(value: R): RakunFlux<R> {
         return fromSourceBuild(this.sourceBuild.thenReturn(value))
-    }
-    then<R>(source?: RakunSource<R>): RakunFlux<R> | RakunFlux<Void> {
-        if (source)
-            return fromSourceBuild(this.sourceBuild.then(source))
-        else
-            return fromSourceBuild(this.sourceBuild.then())
     }
 }
 

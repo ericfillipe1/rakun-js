@@ -10,7 +10,7 @@ export class RakunContextImpl<T> implements RakunContext<T>{
     get(): RakunMono<T> {
         return mono.fromCallBack<T>((ctx) => [ctx.getValue(this)]);
     }
-    define(value: T): RakunMono<Void> {
-        return mono.fromCallBack<Void>((ctx) => [ctx.setValue(this, value)]);
+    define(value: T): RakunMono<typeof Void> {
+        return mono.fromCallBack<typeof Void>((ctx) => [ctx.setValue(this, value)]);
     }
 }
