@@ -14,7 +14,7 @@ export interface RakunFlux<T> extends RakunSource<T> {
     readonly [WrappedValue_OPAQUE]: 'flux';
     sourceBuild: RakunSourceBuild<T>;
     then<Source extends RakunMono<any> | RakunFlux<any>>(source: Source): Source;
-    then(): RakunFlux<typeof Void>;
+    then(): RakunMono<typeof Void>;
     zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunFlux<[T, ...ReturnUnzipWhen<R>]>;
     pipe<R>(fn: (value: T) => R): RakunFlux<R>;
     filter(fn: (value: T) => boolean): RakunFlux<T>;

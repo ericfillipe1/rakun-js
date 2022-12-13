@@ -1567,7 +1567,7 @@
           } else {
             return fromSourceBuild$1(this.sourceBuild.then(source));
           }
-        } else return fromSourceBuild$1(this.sourceBuild.then());
+        } else return fromSourceBuild(this.sourceBuild.then());
       }
     }, {
       key: "block",
