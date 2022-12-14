@@ -1420,10 +1420,6 @@
     return RakunContextManagerImpl;
   }();
 
-  var fromSourceBuild$1 = function fromSourceBuild(sourceBuild) {
-    return new RakunFluxImpl(sourceBuild);
-  };
-
   var RakunMonoImpl = /*#__PURE__*/function () {
     function RakunMonoImpl(sourceBuild) {
       _classCallCheck(this, RakunMonoImpl);
@@ -1433,18 +1429,18 @@
     _createClass(RakunMonoImpl, [{
       key: "flatPipeMany",
       value: function flatPipeMany(fn) {
-        return fromSourceBuild$1(this.sourceBuild.flatPipe(fn));
+        return fromSourceBuild(this.sourceBuild.flatPipe(fn));
       }
     }, {
       key: "then",
       value: function then(source) {
         if (source) {
           if (source[WrappedValue_OPAQUE] == 'flux') {
-            return fromSourceBuild$1(this.sourceBuild.then(source));
-          } else {
             return fromSourceBuild(this.sourceBuild.then(source));
+          } else {
+            return fromSourceBuild$1(this.sourceBuild.then(source));
           }
-        } else return fromSourceBuild(this.sourceBuild.then());
+        } else return fromSourceBuild$1(this.sourceBuild.then());
       }
     }, {
       key: "asyncIterator",
@@ -1454,54 +1450,54 @@
     }, {
       key: "onErrorResume",
       value: function onErrorResume(errorType, fn) {
-        return fromSourceBuild(this.sourceBuild.onErrorResume(errorType, fn));
+        return fromSourceBuild$1(this.sourceBuild.onErrorResume(errorType, fn));
       }
     }, {
       key: "doOnNext",
       value: function doOnNext(handler) {
-        return fromSourceBuild(this.sourceBuild.doOnNext(handler));
+        return fromSourceBuild$1(this.sourceBuild.doOnNext(handler));
       }
     }, {
       key: "doOnError",
       value: function doOnError(handler) {
-        return fromSourceBuild(this.sourceBuild.doOnError(handler));
+        return fromSourceBuild$1(this.sourceBuild.doOnError(handler));
       }
     }, {
       key: "switchIfEmpty",
       value: function switchIfEmpty(source) {
-        return fromSourceBuild(this.sourceBuild.switchIfEmpty(source));
+        return fromSourceBuild$1(this.sourceBuild.switchIfEmpty(source));
       }
     }, {
       key: "defaultIfEmpty",
       value: function defaultIfEmpty(value) {
-        return fromSourceBuild(this.sourceBuild.defaultIfEmpty(value));
+        return fromSourceBuild$1(this.sourceBuild.defaultIfEmpty(value));
       }
     }, {
       key: "zipWhen",
       value: function zipWhen() {
         var _this$sourceBuild;
-        return fromSourceBuild((_this$sourceBuild = this.sourceBuild).zipWhen.apply(_this$sourceBuild, arguments));
+        return fromSourceBuild$1((_this$sourceBuild = this.sourceBuild).zipWhen.apply(_this$sourceBuild, arguments));
       }
     }, {
       key: "zip",
       value: function zip() {
         var _this$sourceBuild2;
-        return fromSourceBuild((_this$sourceBuild2 = this.sourceBuild).zip.apply(_this$sourceBuild2, arguments));
+        return fromSourceBuild$1((_this$sourceBuild2 = this.sourceBuild).zip.apply(_this$sourceBuild2, arguments));
       }
     }, {
       key: "pipe",
       value: function pipe(fn) {
-        return fromSourceBuild(this.sourceBuild.pipe(fn));
+        return fromSourceBuild$1(this.sourceBuild.pipe(fn));
       }
     }, {
       key: "flatPipe",
       value: function flatPipe(fn) {
-        return fromSourceBuild(this.sourceBuild.flatPipe(fn));
+        return fromSourceBuild$1(this.sourceBuild.flatPipe(fn));
       }
     }, {
       key: "thenReturn",
       value: function thenReturn(value) {
-        return fromSourceBuild(this.sourceBuild.thenReturn(value));
+        return fromSourceBuild$1(this.sourceBuild.thenReturn(value));
       }
     }, {
       key: "blockFirst",
@@ -1532,12 +1528,12 @@
     }, {
       key: "filter",
       value: function filter(fn) {
-        return fromSourceBuild(this.sourceBuild.filter(fn));
+        return fromSourceBuild$1(this.sourceBuild.filter(fn));
       }
     }, {
       key: "flatFilter",
       value: function flatFilter(fn) {
-        return fromSourceBuild(this.sourceBuild.flatFilter(fn));
+        return fromSourceBuild$1(this.sourceBuild.flatFilter(fn));
       }
     }, {
       key: "block",
@@ -1548,7 +1544,7 @@
     return RakunMonoImpl;
   }();
 
-  var fromSourceBuild = function fromSourceBuild(sourceBuild) {
+  var fromSourceBuild$1 = function fromSourceBuild(sourceBuild) {
     return new RakunMonoImpl(sourceBuild);
   };
 
@@ -1563,11 +1559,11 @@
       value: function then(source) {
         if (source) {
           if (source[WrappedValue_OPAQUE] == 'mono') {
-            return fromSourceBuild(this.sourceBuild.then(source));
-          } else {
             return fromSourceBuild$1(this.sourceBuild.then(source));
+          } else {
+            return fromSourceBuild(this.sourceBuild.then(source));
           }
-        } else return fromSourceBuild(this.sourceBuild.then());
+        } else return fromSourceBuild$1(this.sourceBuild.then());
       }
     }, {
       key: "block",
@@ -1578,7 +1574,7 @@
       key: "array",
       value: function array() {
         var _this = this;
-        return fromSourceBuild(sourceBuild$1.fromCallback( /*#__PURE__*/function () {
+        return fromSourceBuild$1(sourceBuild$1.fromCallback( /*#__PURE__*/function () {
           var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(ctx) {
             return regenerator.wrap(function _callee$(_context) {
               while (1) {
@@ -1609,59 +1605,59 @@
     }, {
       key: "switchIfEmpty",
       value: function switchIfEmpty(source) {
-        return fromSourceBuild$1(this.sourceBuild.switchIfEmpty(source));
+        return fromSourceBuild(this.sourceBuild.switchIfEmpty(source));
       }
     }, {
       key: "defaultIfEmpty",
       value: function defaultIfEmpty(value) {
-        return fromSourceBuild$1(this.sourceBuild.defaultIfEmpty(value));
+        return fromSourceBuild(this.sourceBuild.defaultIfEmpty(value));
       }
     }, {
       key: "onErrorResume",
       value: function onErrorResume(errorType, fn) {
-        return fromSourceBuild$1(this.sourceBuild.onErrorResume(errorType, fn));
+        return fromSourceBuild(this.sourceBuild.onErrorResume(errorType, fn));
       }
     }, {
       key: "doOnNext",
       value: function doOnNext(handler) {
-        return fromSourceBuild$1(this.sourceBuild.doOnNext(handler));
+        return fromSourceBuild(this.sourceBuild.doOnNext(handler));
       }
     }, {
       key: "doOnError",
       value: function doOnError(handler) {
-        return fromSourceBuild$1(this.sourceBuild.doOnError(handler));
+        return fromSourceBuild(this.sourceBuild.doOnError(handler));
       }
     }, {
       key: "zipWhen",
       value: function zipWhen() {
         var _this$sourceBuild;
-        return fromSourceBuild$1((_this$sourceBuild = this.sourceBuild).zipWhen.apply(_this$sourceBuild, arguments));
+        return fromSourceBuild((_this$sourceBuild = this.sourceBuild).zipWhen.apply(_this$sourceBuild, arguments));
       }
     }, {
       key: "zip",
       value: function zip() {
         var _this$sourceBuild2;
-        return fromSourceBuild$1((_this$sourceBuild2 = this.sourceBuild).zip.apply(_this$sourceBuild2, arguments));
+        return fromSourceBuild((_this$sourceBuild2 = this.sourceBuild).zip.apply(_this$sourceBuild2, arguments));
       }
     }, {
       key: "pipe",
       value: function pipe(fn) {
-        return fromSourceBuild$1(this.sourceBuild.pipe(fn));
+        return fromSourceBuild(this.sourceBuild.pipe(fn));
       }
     }, {
       key: "flatPipe",
       value: function flatPipe(fn) {
-        return fromSourceBuild$1(this.sourceBuild.flatPipe(fn));
+        return fromSourceBuild(this.sourceBuild.flatPipe(fn));
       }
     }, {
       key: "filter",
       value: function filter(fn) {
-        return fromSourceBuild$1(this.sourceBuild.filter(fn));
+        return fromSourceBuild(this.sourceBuild.filter(fn));
       }
     }, {
       key: "flatFilter",
       value: function flatFilter(fn) {
-        return fromSourceBuild$1(this.sourceBuild.flatFilter(fn));
+        return fromSourceBuild(this.sourceBuild.flatFilter(fn));
       }
     }, {
       key: "blockFirst",
@@ -1671,35 +1667,35 @@
     }, {
       key: "thenReturn",
       value: function thenReturn(value) {
-        return fromSourceBuild$1(this.sourceBuild.thenReturn(value));
+        return fromSourceBuild(this.sourceBuild.thenReturn(value));
       }
     }]);
     return RakunFluxImpl;
   }();
 
+  var fromSourceBuild = function fromSourceBuild(sourceBuild) {
+    return new RakunFluxImpl(sourceBuild);
+  };
+
   var RakunStaticFluxImpl = /*#__PURE__*/function () {
     function RakunStaticFluxImpl() {
       _classCallCheck(this, RakunStaticFluxImpl);
+      _defineProperty(this, "fromSourceBuild", fromSourceBuild);
     }
     _createClass(RakunStaticFluxImpl, [{
       key: "fromCallBack",
       value: function fromCallBack() {
-        return this.fromSourceBuild(sourceBuild$1.fromCallback.apply(sourceBuild$1, arguments));
-      }
-    }, {
-      key: "fromSourceBuild",
-      value: function fromSourceBuild(sourceBuild) {
-        return new RakunFluxImpl(sourceBuild);
+        return fromSourceBuild(sourceBuild$1.fromCallback.apply(sourceBuild$1, arguments));
       }
     }, {
       key: "fromPromise",
       value: function fromPromise(promise) {
-        return this.fromSourceBuild(sourceBuild$1.fromArray(promise));
+        return fromSourceBuild(sourceBuild$1.fromArray(promise));
       }
     }, {
       key: "fromArray",
       value: function fromArray(values) {
-        return this.fromSourceBuild(sourceBuild$1.fromArray(values));
+        return fromSourceBuild(sourceBuild$1.fromArray(values));
       }
     }, {
       key: "just",
@@ -1707,7 +1703,7 @@
         for (var _len = arguments.length, values = new Array(_len), _key = 0; _key < _len; _key++) {
           values[_key] = arguments[_key];
         }
-        return this.fromSourceBuild(sourceBuild$1.fromArray(values));
+        return fromSourceBuild(sourceBuild$1.fromArray(values));
       }
     }]);
     return RakunStaticFluxImpl;
@@ -1717,16 +1713,12 @@
   var StaticMonoImpl = /*#__PURE__*/function () {
     function StaticMonoImpl() {
       _classCallCheck(this, StaticMonoImpl);
+      _defineProperty(this, "fromSourceBuild", fromSourceBuild$1);
     }
     _createClass(StaticMonoImpl, [{
       key: "fromCallBack",
       value: function fromCallBack() {
         return this.fromSourceBuild(sourceBuild$1.fromCallback.apply(sourceBuild$1, arguments));
-      }
-    }, {
-      key: "fromSourceBuild",
-      value: function fromSourceBuild$1(p) {
-        return fromSourceBuild(p);
       }
     }, {
       key: "then",
