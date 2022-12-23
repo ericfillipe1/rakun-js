@@ -1645,8 +1645,8 @@ var StaticMonoImpl = /*#__PURE__*/function () {
     _defineProperty(this, "fromSourceBuild", fromSourceBuild$1);
   }
   _createClass(StaticMonoImpl, [{
-    key: "fromCallBack",
-    value: function fromCallBack() {
+    key: "fromCallback",
+    value: function fromCallback() {
       for (var _len = arguments.length, callbacks = new Array(_len), _key = 0; _key < _len; _key++) {
         callbacks[_key] = arguments[_key];
       }
@@ -1700,7 +1700,7 @@ var RakunContextImpl = /*#__PURE__*/function () {
     key: "get",
     value: function get() {
       var _this = this;
-      return mono$1.fromCallBack(function (ctx) {
+      return mono$1.fromCallback(function (ctx) {
         return ctx.getValue(_this);
       });
     }
@@ -1708,7 +1708,7 @@ var RakunContextImpl = /*#__PURE__*/function () {
     key: "define",
     value: function define(value) {
       var _this2 = this;
-      return mono$1.fromCallBack(function (ctx) {
+      return mono$1.fromCallback(function (ctx) {
         return ctx.setValue(_this2, value);
       });
     }

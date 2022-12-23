@@ -2,7 +2,7 @@ import { RakunCallback, ReturnUnzip } from "../sourceBuild";
 import { Void } from "../wrapped";
 import { RakunMono, RakunStaticMono } from "./interface";
 export declare class StaticMonoImpl implements RakunStaticMono {
-    fromCallBack<T>(...callbacks: RakunCallback<T | Promise<T>>[]): RakunMono<T>;
+    fromCallback<T>(...callbacks: RakunCallback<T | Promise<T>>[]): RakunMono<T>;
     fromSourceBuild: <T>(sourceBuild: import("../sourceBuild").RakunSourceBuild<T>) => RakunMono<T>;
     then(): RakunMono<typeof Void>;
     empty<T>(): RakunMono<T>;
