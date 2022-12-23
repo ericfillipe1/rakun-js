@@ -28,7 +28,7 @@ export type RakunStaticMono = {
     just<T>(value: T): RakunMono<T>;
     fromSourceBuild<T>(sourceBuild: RakunSourceBuild<T>): RakunMono<T>;
     fromPromise<T>(promise: Promise<T>): RakunMono<T>;
-    fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunMono<T>;
+    fromCallBack<T>(...callbacks: RakunCallback<Promise<T> | T>[]): RakunMono<T>;
     then(): RakunMono<typeof Void>;
     empty<T>(): RakunMono<T>;
     error<T>(error: any): RakunMono<T>;

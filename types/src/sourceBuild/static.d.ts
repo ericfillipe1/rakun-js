@@ -1,7 +1,7 @@
 import { Void } from "../wrapped";
-import { RakunSourceBuild, RakunSource, RakunStaticSourceBuild, ReturnUnzip, RakunCallback } from "./interface";
+import { RakunSourceBuild, RakunSource, RakunStaticSourceBuild, ReturnUnzip } from "./interface";
 export declare class StaticSourceBuildImpl implements RakunStaticSourceBuild {
-    fromCallback<R>(...callbacks: RakunCallback<R>[]): RakunSourceBuild<R>;
+    fromCallback: <T>(...callbacks: import("./interface").RakunCallback<T[] | Promise<T[]> | Promise<T>[]>[]) => RakunSourceBuild<T>;
     just<T>(...promises: Promise<T>[] | T[]): RakunSourceBuild<T>;
     fromArray<R>(values: R[] | Promise<R[]>): RakunSourceBuild<R>;
     then(): RakunSourceBuild<typeof Void>;

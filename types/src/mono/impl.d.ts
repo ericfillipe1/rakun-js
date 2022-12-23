@@ -21,8 +21,8 @@ export declare class RakunMonoImpl<T> implements RakunMono<T> {
     pipe<R>(fn: (value: T) => R): RakunMono<R>;
     flatPipe<R>(fn: (value: T) => RakunSource<R>): RakunMono<R>;
     thenReturn<R>(value: R): RakunMono<R>;
-    blockFirst(contextManager?: RakunContextManager): Promise<T>;
     filter(fn: (value: T) => boolean): RakunMono<T>;
     flatFilter(fn: (value: T) => RakunSource<boolean>): RakunMono<T>;
+    blockFirst(contextManager?: RakunContextManager): Promise<T>;
     block(contextManager: RakunContextManager): Promise<T[]>;
 }

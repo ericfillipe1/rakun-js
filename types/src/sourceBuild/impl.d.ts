@@ -1,13 +1,13 @@
 import { RakunContextManager } from "../context/interface";
 import { ErrorConstructor } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
-import { RakunCallback, RakunCallbackSource, RakunSourceBuild, RakunSource, ReturnUnzip, ReturnUnzipWhen } from "./interface";
-export declare const fromAsyncIterator: <T>(execute: RakunCallbackSource<T>) => RakunSourceBuild<T>;
+import { RakunCallback, RakunSourceBuild, RakunSource, ReturnUnzip, ReturnUnzipWhen } from "./interface";
+export declare const fromAsyncIterator: <T>(execute: RakunCallback<AsyncIterable<T>>) => RakunSourceBuild<T>;
 export declare const resolveArray: <T>(array: T | T[]) => T[];
-export declare const fromCallback: <T>(...callbacks: RakunCallback<T>[]) => RakunSourceBuild<T>;
+export declare const fromCallback: <T>(...callbacks: RakunCallback<T[] | Promise<T[]> | Promise<T>[]>[]) => RakunSourceBuild<T>;
 export declare class RakunSourceBuildImpl<T> implements RakunSourceBuild<T> {
     private calback;
-    constructor(calback: RakunCallbackSource<T>);
+    constructor(calback: RakunCallback<AsyncIterable<T>>);
     [WrappedValue_OPAQUE]: string;
     switchIfEmpty(source: RakunSource<T>): RakunSourceBuild<T>;
     defaultIfEmpty(value: T): RakunSourceBuild<T>;

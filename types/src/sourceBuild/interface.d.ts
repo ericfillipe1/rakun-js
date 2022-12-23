@@ -14,10 +14,7 @@ export type ReturnUnzipWhen<T> = {
     [K in keyof T]: T[K] extends (value: any) => RakunSource<infer R> ? R : never;
 };
 export type RakunCallback<T> = {
-    (contextManager: RakunContextManager): Promise<T>[] | T[] | Promise<T[]>;
-};
-export type RakunCallbackSource<T> = {
-    (contextManager: RakunContextManager): AsyncIterable<T>;
+    (contextManager: RakunContextManager): T;
 };
 export interface RakunSourceBuild<T> extends RakunSource<T> {
     flatFilter(fn: (value: T) => RakunSource<boolean>): RakunSourceBuild<T>;
@@ -42,5 +39,5 @@ export type RakunStaticSourceBuild = {
     just<T>(...promises: Promise<T>[] | T[]): RakunSourceBuild<T>;
     error<T>(error: any): RakunSourceBuild<T>;
     fromArray<R>(values: R[] | Promise<R[]>): RakunSourceBuild<R>;
-    fromCallback<R>(...callbacks: RakunCallback<R>[]): RakunSourceBuild<R>;
+    fromCallback<T>(...callbacks: RakunCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunSourceBuild<T>;
 };

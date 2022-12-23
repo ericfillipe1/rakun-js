@@ -4,7 +4,7 @@ import { RakunSourceBuild, RakunSource, ReturnUnzipWhen, RakunCallback } from ".
 import { ErrorConstructor, UnpackArrayType } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
 export type RakunStaticFlux = {
-    fromCallBack<T>(...callbacks: RakunCallback<T>[]): RakunFlux<T>;
+    fromCallback<T>(...callbacks: RakunCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunFlux<T>;
     fromArray<R>(value: R[]): RakunFlux<R>;
     fromPromise<T>(promise: Promise<T[]>): RakunFlux<T>;
     fromSourceBuild<T>(source: RakunSourceBuild<T>): RakunFlux<T>;
