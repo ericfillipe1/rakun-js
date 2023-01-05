@@ -1,4 +1,5 @@
-import { flux } from "./static";
+import { RakunStaticFluxImpl } from "./impl";
+import { RakunStaticFlux } from "./interface";
 export * from "./interface";
-export { RakunFluxImpl } from "./impl";
+const flux: RakunStaticFlux = new RakunStaticFluxImpl();
 export default flux;

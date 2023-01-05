@@ -4,89 +4,107 @@
 
 import { RakunContextManager } from "../context/interface";
 import { RakunMono } from "../mono/interface";
-import { RakunSource, RakunSourceBuild, ReturnUnzip, ReturnUnzipWhen } from "../sourceBuild/interface";
-import { ErrorConstructor } from "../types";
+import { RakunAsyncIterator, ReturnUnzip, ReturnUnzipWhen } from "../asyncIterator/interface";
+import { ErrorConstructor, RakunContextManagerCallback, RakunSource, UnpackArrayType } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
-import { RakunFlux } from "./interface";
-import { fromSourceBuild as monoFromSourceBuild } from "../mono/functions";
-import { sourceBuild } from "../sourceBuild/static";
+import { RakunFlux, RakunStaticFlux } from "./interface";
+import { fromSourceBuild as monoFromSourceBuild } from "../mono/impl";
 import { RakunContextManagerImpl } from "../context/manager";
-import { fromSourceBuild } from "./functions";
+import asyncIterator from "../asyncIterator";
 
+export const fromSourceBuild = <T>(sourceBuild: RakunAsyncIterator<T>): RakunFlux<T> => {
+    return new RakunFluxImpl<T>(sourceBuild);
+}
+
+
+export class RakunStaticFluxImpl implements RakunStaticFlux {
+    fromCallback<T>(...callbacks: RakunContextManagerCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunFlux<T> {
+        return fromSourceBuild<T>(asyncIterator.fromCallback(...callbacks));
+    }
+    fromSourceBuild = fromSourceBuild
+    fromPromise<T>(promise: Promise<T[]>): RakunFlux<T> {
+        return fromSourceBuild(asyncIterator.fromArray(promise));
+    }
+    fromArray<R>(values: R[]): RakunFlux<R> {
+        return fromSourceBuild(asyncIterator.fromArray(values));
+    }
+    just<T extends any[]>(...values: T): RakunFlux<UnpackArrayType<T>> {
+        return fromSourceBuild(asyncIterator.fromArray(values));
+    }
+}
 
 export class RakunFluxImpl<T> implements RakunFlux<T>{
-    constructor(public sourceBuild: RakunSourceBuild<T>) {
+    constructor(public asyncIterator: RakunAsyncIterator<T>) {
     }
     [WrappedValue_OPAQUE]: "flux" = 'flux';
     then<Source extends (RakunMono<any> | RakunFlux<any>)>(source?: Source): Source | RakunMono<typeof Void> {
         if (source)
             if (source[WrappedValue_OPAQUE] == 'mono') {
-                return monoFromSourceBuild(this.sourceBuild.then(source)) as any
+                return monoFromSourceBuild(this.asyncIterator.then(source)) as any
             }
             else {
-                return fromSourceBuild(this.sourceBuild.then(source)) as any
+                return fromSourceBuild(this.asyncIterator.then(source)) as any
             }
         else
-            return fromSourceBuild(this.sourceBuild.then()) as any
-    }
-
-    block(contextManager?: RakunContextManager): Promise<T[]> {
-        return this.sourceBuild.block(contextManager ?? new RakunContextManagerImpl())
+            return monoFromSourceBuild(this.asyncIterator.then()) as any
     }
     array(): RakunMono<T[]> {
-        return monoFromSourceBuild(sourceBuild.fromCallback(async (ctx) =>
-            [await this.sourceBuild.block(ctx)]
+        return monoFromSourceBuild(asyncIterator.fromCallback(async (ctx) =>
+            [await this.asyncIterator.block(ctx)]
         ));
     }
-    asyncIterator(ctx: RakunContextManager): AsyncIterator<T> {
-        return this.sourceBuild.asyncIterator(ctx);
-    }
-
     switchIfEmpty(source: RakunSource<T>): RakunFlux<T> {
-        return fromSourceBuild(this.sourceBuild.switchIfEmpty(source))
+        return fromSourceBuild(this.asyncIterator.switchIfEmpty(source))
     }
     defaultIfEmpty(value: T): RakunFlux<T> {
-        return fromSourceBuild(this.sourceBuild.defaultIfEmpty(value))
+        return fromSourceBuild(this.asyncIterator.defaultIfEmpty(value))
     }
 
-    onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunMono<T>): RakunFlux<T> {
-        return fromSourceBuild(this.sourceBuild.onErrorResume(errorType, fn))
+    onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSource<T>): RakunFlux<T> {
+        return fromSourceBuild(this.asyncIterator.onErrorResume(errorType, fn))
     }
     doOnNext(handler: (value: T) => any): RakunFlux<T> {
-        return fromSourceBuild(this.sourceBuild.doOnNext(handler))
+        return fromSourceBuild(this.asyncIterator.doOnNext(handler))
     }
     doOnError(handler: (error: any) => any): RakunFlux<T> {
-        return fromSourceBuild(this.sourceBuild.doOnError(handler))
+        return fromSourceBuild(this.asyncIterator.doOnError(handler))
     }
 
-    zipWhen<R extends ((value: T) => RakunMono<any>)[]>(...monoArrayFn: R): RakunFlux<[T, ...ReturnUnzipWhen<R>]> {
-        return fromSourceBuild<any>(this.sourceBuild.zipWhen(...monoArrayFn))
+    zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunFlux<[T, ...ReturnUnzipWhen<R>]> {
+        return fromSourceBuild<any>(this.asyncIterator.zipWhen(...monoArrayFn))
 
     }
     zip<R extends RakunMono<any>[]>(...monoArray: R): RakunFlux<[T, ...ReturnUnzip<R>]> {
-        return fromSourceBuild<any>(this.sourceBuild.zip(...monoArray))
+        return fromSourceBuild<any>(this.asyncIterator.zip(...monoArray))
     }
     pipe<R>(fn: (value: T) => R): RakunFlux<R> {
-        return fromSourceBuild<R>(this.sourceBuild.pipe<R>(fn))
+        return fromSourceBuild<R>(this.asyncIterator.pipe<R>(fn))
     }
     flatPipe<R>(fn: (value: T) => RakunSource<R>): RakunFlux<R> {
-        return fromSourceBuild(this.sourceBuild.flatPipe(fn))
+        return fromSourceBuild(this.asyncIterator.flatPipe(fn))
     }
 
     filter(fn: (value: T) => boolean): RakunFlux<T> {
-        return fromSourceBuild(this.sourceBuild.filter(fn))
+        return fromSourceBuild(this.asyncIterator.filter(fn))
     }
-    flatFilter(fn: (value: T) => RakunMono<boolean>): RakunFlux<T> {
-        return fromSourceBuild(this.sourceBuild.flatFilter(fn))
+    flatFilter(fn: (value: T) => RakunSource<boolean>): RakunFlux<T> {
+        return fromSourceBuild(this.asyncIterator.flatFilter(fn))
     }
+    thenReturn<R>(value: R): RakunFlux<R> {
+        return fromSourceBuild(this.asyncIterator.thenReturn(value))
+    }
+
 
     blockFirst(contextManager?: RakunContextManager): Promise<T> {
-        return this.sourceBuild.blockFirst(contextManager ?? new RakunContextManagerImpl());
+        return this.asyncIterator.blockFirst(contextManager ?? new RakunContextManagerImpl());
+    }
+    block(contextManager: RakunContextManager): Promise<T[]> {
+        return this.asyncIterator.block(contextManager)
     }
 
-
-    thenReturn<R>(value: R): RakunFlux<R> {
-        return fromSourceBuild(this.sourceBuild.thenReturn(value))
+    iterator(ctx: RakunContextManager): AsyncIterator<T> {
+        return this.asyncIterator.iterator(ctx);
     }
+
 }
 

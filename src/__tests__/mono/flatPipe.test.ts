@@ -1,7 +1,7 @@
 import mono from "../../mono";
 
 describe('mono flatPipe', () => {
-    test('test plus value', () => {
+    test('test success', () => {
         const result = mono.just("1")
             .pipe(txt => txt + "-a")
             .flatPipe(txt => mono.just(txt + "--1a"))

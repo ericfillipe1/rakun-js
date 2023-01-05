@@ -9,12 +9,9 @@ const common = {
   rootDir: '.',
   roots: ['<rootDir>/src'],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-  },
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.jest.json',
-    },
+    '^.+\\.tsx?$':['ts-jest',{
+      tsconfig: 'tsconfig.jest.json'
+    }],
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   moduleFileExtensions: ['ts', 'tsx', 'js'],
@@ -50,14 +47,10 @@ const native = {
   testMatch: ['**/+([a-zA-Z]).native.(spec|test).ts?(x)'],
   transform: {
     ...tsjPresets.transform,
-    '^.+\\.tsx?$': 'ts-jest',
-    '^.+\\.jsx?$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
-  },
-  globals: {
-    'ts-jest': {
+    '^.+\\.tsx?$': ['ts-jest',{
       tsconfig: 'tsconfig.jest.json',
       babelConfig: true,
-    },
+    }]
   },
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\](?!react-native)[/\\\\].+',

@@ -1,8 +1,8 @@
 import mono from "../../mono";
 
-describe('flux pipe', () => {
+describe('mono pipe', () => {
 
-    test('test plus value', () => {
+    test('test concat value', () => {
         const result = mono.just("1")
             .pipe(txt => txt + "-a")
             .blockFirst()

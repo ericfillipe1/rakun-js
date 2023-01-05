@@ -1,16 +1,14 @@
 import flux from "../../flux";
 import mono from "../../mono";
 
-describe('flux zip', () => {
+describe('flux onErrorResume', () => {
 
     class MyError extends Error {
 
 
     }
 
-
-
-    test('test zipWhen', async () => {
+    test('test onErrorResume', async () => {
         const error = new MyError();
         let errorReturn = null;
         let value = null;

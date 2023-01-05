@@ -1,6 +1,6 @@
 import mono from "../../mono";
 
-describe('mono zip', () => {
+describe('mono zipWhen', () => {
     test('zipWhen', () => {
         const result = mono.just(1)
             .zipWhen((r) => mono.just(r + "-test"), (r) => mono.just(r + 5))

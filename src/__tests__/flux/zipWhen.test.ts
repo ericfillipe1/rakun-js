@@ -1,9 +1,9 @@
 import flux from "../../flux";
 import mono from "../../mono";
 
-describe('flux zip', () => {
+describe('flux zipWhen', () => {
 
-    test('test zipWhen', () => {
+    test('test success', () => {
         const result = flux.just(1, 2, 3, "96")
             .zipWhen((r) => mono.just(r + "-test"), (r) => mono.just(r + "56"))
             .pipe(([m1, m2, m3]) => `${m1},${m2},${m3}`)

@@ -1,8 +1,8 @@
 import mono from "../../mono";
 
-describe('flux pipe', () => {
+describe('mono filter', () => {
 
-    test('test plus value', () => {
+    test('test success', () => {
         const result = mono.just("1")
             .pipe(txt => txt + "-a")
             .filter(item => item == "1")

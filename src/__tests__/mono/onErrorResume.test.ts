@@ -1,16 +1,14 @@
 
 import mono from "../../mono";
 
-describe('flux onErrorResume', () => {
+describe('mono onErrorResume', () => {
 
     class MyError extends Error {
 
 
     }
 
-
-
-    test('test onErrorResume', async () => {
+    test('test errorResume', async () => {
 
         const error = new MyError();
         let errorReturn = null;

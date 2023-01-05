@@ -21,7 +21,7 @@ describe('flux pipe', () => {
 
     });
 
-    test('test plus value', () => {
+    test('test concat value', () => {
         const result = flux.just("1", 2, "3")
             .pipe(txt => txt + "-a")
             .array()

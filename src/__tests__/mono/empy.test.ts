@@ -1,7 +1,7 @@
 import mono from "../../mono";
 
-describe('mono zip', () => {
-    test('zipWhen', () => {
+describe('mono empy', () => {
+    test('test success', () => {
         const result = mono.just(1)
             .flatPipe(() => mono.empty<string>())
             .zipWhen((r) => mono.just(r + "-test"), (r) => mono.just(r + 5))
