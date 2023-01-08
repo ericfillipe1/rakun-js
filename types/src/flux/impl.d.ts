@@ -1,12 +1,20 @@
 import { RakunContextManager } from "../context/interface";
 import { RakunMono } from "../mono/interface";
-import { RakunSource, RakunSourceBuild, ReturnUnzip, ReturnUnzipWhen } from "../sourceBuild/interface";
-import { ErrorConstructor } from "../types";
+import { RakunAsyncIterator, ReturnUnzip, ReturnUnzipWhen } from "../asyncIterator/interface";
+import { ErrorConstructor, RakunContextManagerCallback, RakunSource, UnpackArrayType } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
-import { RakunFlux } from "./interface";
+import { RakunFlux, RakunStaticFlux } from "./interface";
+export declare const fromSourceBuild: <T>(sourceBuild: RakunAsyncIterator<T>) => RakunFlux<T>;
+export declare class RakunStaticFluxImpl implements RakunStaticFlux {
+    fromCallback<T>(...callbacks: RakunContextManagerCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunFlux<T>;
+    fromSourceBuild: <T>(sourceBuild: RakunAsyncIterator<T>) => RakunFlux<T>;
+    fromPromise<T>(promise: Promise<T[]>): RakunFlux<T>;
+    fromArray<R>(values: R[]): RakunFlux<R>;
+    just<T extends any[]>(...values: T): RakunFlux<UnpackArrayType<T>>;
+}
 export declare class RakunFluxImpl<T> implements RakunFlux<T> {
-    sourceBuild: RakunSourceBuild<T>;
-    constructor(sourceBuild: RakunSourceBuild<T>);
+    private _asyncIterator;
+    constructor(_asyncIterator: RakunAsyncIterator<T>);
     [WrappedValue_OPAQUE]: "flux";
     then<Source extends (RakunMono<any> | RakunFlux<any>)>(source?: Source): Source | RakunMono<typeof Void>;
     array(): RakunMono<T[]>;
@@ -24,5 +32,5 @@ export declare class RakunFluxImpl<T> implements RakunFlux<T> {
     thenReturn<R>(value: R): RakunFlux<R>;
     blockFirst(contextManager?: RakunContextManager): Promise<T>;
     block(contextManager: RakunContextManager): Promise<T[]>;
-    asyncIterator(ctx: RakunContextManager): AsyncIterator<T>;
+    iterator(ctx: RakunContextManager): AsyncIterator<T>;
 }

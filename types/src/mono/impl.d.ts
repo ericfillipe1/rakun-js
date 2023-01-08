@@ -1,16 +1,27 @@
 import { RakunContextManager } from "../context/interface";
-import { RakunSource, RakunSourceBuild, ReturnUnzip, ReturnUnzipWhen } from "../sourceBuild/interface";
+import { RakunAsyncIterator, ReturnUnzip, ReturnUnzipWhen } from "../asyncIterator/interface";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
-import { ErrorConstructor } from "../types";
-import { RakunMono } from "./interface";
+import { ErrorConstructor, RakunContextManagerCallback, RakunSource } from "../types";
+import { RakunMono, RakunStaticMono } from "./interface";
 import { RakunFlux } from "../flux";
+export declare const fromSourceBuild: <T>(sourceBuild: RakunAsyncIterator<T>) => RakunMono<T>;
+export declare class RakunStaticMonoImpl implements RakunStaticMono {
+    fromCallback<T>(...callbacks: RakunContextManagerCallback<T | Promise<T>>[]): RakunMono<T>;
+    fromSourceBuild: <T>(sourceBuild: RakunAsyncIterator<T>) => RakunMono<T>;
+    then(): RakunMono<typeof Void>;
+    empty<T>(): RakunMono<T>;
+    zip<T extends RakunMono<any>[]>(...monoArray: T): RakunMono<ReturnUnzip<T>>;
+    just<T>(value: T): RakunMono<T>;
+    fromPromise<T>(promise: Promise<T>): RakunMono<T>;
+    error<T>(error: any): RakunMono<T>;
+}
 export declare class RakunMonoImpl<T> implements RakunMono<T> {
-    sourceBuild: RakunSourceBuild<T>;
+    private _asyncIterator;
     readonly [WrappedValue_OPAQUE] = "mono";
-    constructor(sourceBuild: RakunSourceBuild<T>);
+    constructor(_asyncIterator: RakunAsyncIterator<T>);
     flatPipeMany<R>(fn: (value: T) => RakunSource<R>): RakunFlux<R>;
     then<Source extends (RakunMono<any> | RakunFlux<any>)>(source?: Source): Source | RakunMono<typeof Void>;
-    asyncIterator(ctx: RakunContextManager): AsyncIterator<T, any, undefined>;
+    iterator(ctx: RakunContextManager): AsyncIterator<T>;
     onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSource<T>): RakunMono<T>;
     doOnNext(handler: (value: T) => any): RakunMono<T>;
     doOnError(handler: (error: any) => any): RakunMono<T>;

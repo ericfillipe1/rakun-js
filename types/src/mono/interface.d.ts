@@ -1,11 +1,11 @@
 import { RakunContextManager } from "../context/interface";
 import { RakunFlux } from "../flux";
-import { RakunSourceBuild, RakunSource, ReturnUnzip, ReturnUnzipWhen, RakunCallback } from "../sourceBuild/interface";
-import { ErrorConstructor } from "../types";
+import { RakunAsyncIterator, ReturnUnzip, ReturnUnzipWhen } from "../asyncIterator/interface";
+import { ErrorConstructor, RakunContextManagerCallback, RakunSource } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
-export interface RakunMono<T> extends RakunSource<T> {
+export type RakunMono<T> = {
     readonly [WrappedValue_OPAQUE]: 'mono';
-    sourceBuild: RakunSourceBuild<T>;
+    iterator(ctx: RakunContextManager): AsyncIterator<T>;
     zip<R extends RakunMono<any>[]>(...monoArray: R): RakunMono<[T, ...ReturnUnzip<R>]>;
     zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunMono<[T, ...ReturnUnzipWhen<R>]>;
     pipe<R>(fn: (value: T) => R): RakunMono<R>;
@@ -22,13 +22,13 @@ export interface RakunMono<T> extends RakunSource<T> {
     onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSource<T>): RakunMono<T>;
     switchIfEmpty(source: RakunSource<T>): RakunMono<T>;
     defaultIfEmpty(value: T): RakunMono<T>;
-}
+};
 export type RakunStaticMono = {
     zip<T extends RakunMono<any>[]>(...monoArray: T): RakunMono<ReturnUnzip<T>>;
     just<T>(value: T): RakunMono<T>;
-    fromSourceBuild<T>(sourceBuild: RakunSourceBuild<T>): RakunMono<T>;
+    fromSourceBuild<T>(sourceBuild: RakunAsyncIterator<T>): RakunMono<T>;
     fromPromise<T>(promise: Promise<T>): RakunMono<T>;
-    fromCallback<T>(...callbacks: RakunCallback<Promise<T> | T>[]): RakunMono<T>;
+    fromCallback<T>(...callbacks: RakunContextManagerCallback<Promise<T> | T>[]): RakunMono<T>;
     then(): RakunMono<typeof Void>;
     empty<T>(): RakunMono<T>;
     error<T>(error: any): RakunMono<T>;

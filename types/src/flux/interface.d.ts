@@ -1,18 +1,18 @@
 import { RakunContextManager } from "../context/interface";
 import { RakunMono } from "../mono";
-import { RakunSourceBuild, RakunSource, ReturnUnzipWhen, RakunCallback } from "../sourceBuild/interface";
-import { ErrorConstructor, UnpackArrayType } from "../types";
+import { RakunAsyncIterator, ReturnUnzipWhen } from "../asyncIterator/interface";
+import { ErrorConstructor, RakunContextManagerCallback, RakunSource, UnpackArrayType } from "../types";
 import { Void, WrappedValue_OPAQUE } from "../wrapped";
 export type RakunStaticFlux = {
-    fromCallback<T>(...callbacks: RakunCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunFlux<T>;
+    fromCallback<T>(...callbacks: RakunContextManagerCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunFlux<T>;
     fromArray<R>(value: R[]): RakunFlux<R>;
     fromPromise<T>(promise: Promise<T[]>): RakunFlux<T>;
-    fromSourceBuild<T>(source: RakunSourceBuild<T>): RakunFlux<T>;
+    fromSourceBuild<T>(source: RakunAsyncIterator<T>): RakunFlux<T>;
     just<T extends any[]>(...monoArray: T): RakunFlux<UnpackArrayType<T>>;
 };
-export interface RakunFlux<T> extends RakunSource<T> {
+export type RakunFlux<T> = {
     readonly [WrappedValue_OPAQUE]: 'flux';
-    sourceBuild: RakunSourceBuild<T>;
+    iterator(ctx: RakunContextManager): AsyncIterator<T>;
     then<Source extends RakunMono<any> | RakunFlux<any>>(source: Source): Source;
     then(): RakunMono<typeof Void>;
     zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunFlux<[T, ...ReturnUnzipWhen<R>]>;
@@ -28,4 +28,4 @@ export interface RakunFlux<T> extends RakunSource<T> {
     onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSource<T>): RakunFlux<T>;
     switchIfEmpty(source: RakunSource<T>): RakunFlux<T>;
     defaultIfEmpty(value: T): RakunFlux<T>;
-}
+};

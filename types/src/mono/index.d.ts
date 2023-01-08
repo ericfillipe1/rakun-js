@@ -1,4 +1,4 @@
-import { mono } from "./static";
+import { RakunStaticMono } from "./interface";
 export * from "./interface";
-export { RakunMonoImpl } from "./impl";
+declare const mono: RakunStaticMono;
 export default mono;

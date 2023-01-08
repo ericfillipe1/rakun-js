@@ -1,3 +1,34 @@
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+      args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+      _next(undefined);
+    });
+  };
+}
+
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -61,37 +92,6 @@ function _defineProperty(obj, key, value) {
     obj[key] = value;
   }
   return obj;
-}
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-      args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-      _next(undefined);
-    });
-  };
 }
 
 function createCommonjsModule(fn) {
@@ -468,878 +468,6 @@ function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 }
 
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-function _toArray(arr) {
-  return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
-}
-
-function _asyncIterator(iterable) { var method, async, sync, retry = 2; for ("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;) { if (async && null != (method = iterable[async])) return method.call(iterable); if (sync && null != (method = iterable[sync])) return new AsyncFromSyncIterator(method.call(iterable)); async = "@@asyncIterator", sync = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
-function AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var done = r.done; return Promise.resolve(r.value).then(function (value) { return { value: value, done: done }; }); } return AsyncFromSyncIterator = function AsyncFromSyncIterator(s) { this.s = s, this.n = s.next; }, AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(value) { var ret = this.s["return"]; return void 0 === ret ? Promise.resolve({ value: value, done: !0 }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments)); }, "throw": function _throw(value) { var thr = this.s["return"]; return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments)); } }, new AsyncFromSyncIterator(s); }
-var fromAsyncIterator = function fromAsyncIterator(execute) {
-  return new RakunSourceBuildImpl(execute);
-};
-var fromCallback = function fromCallback() {
-  for (var _len = arguments.length, callbacks = new Array(_len), _key = 0; _key < _len; _key++) {
-    callbacks[_key] = arguments[_key];
-  }
-  return fromAsyncIterator(function (ctx) {
-    var values = null;
-    return _defineProperty({}, Symbol.asyncIterator, function () {
-      var asyncIterator = {
-        next: function next() {
-          return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
-            var _values, _values2, value, rest;
-            return regenerator.wrap(function _callee$(_context) {
-              while (1) switch (_context.prev = _context.next) {
-                case 0:
-                  if (values) {
-                    _context.next = 4;
-                    break;
-                  }
-                  _context.next = 3;
-                  return Promise.resolve(callbacks.map(function (callback) {
-                    return Promise.resolve(callback(ctx));
-                  })).then(function (a) {
-                    return Promise.all(a);
-                  }).then(function (a) {
-                    return Promise.all(a.flat().map(function (e) {
-                      return Promise.resolve(e);
-                    }));
-                  });
-                case 3:
-                  values = _context.sent;
-                case 4:
-                  if (!(!values || values.length == 0)) {
-                    _context.next = 6;
-                    break;
-                  }
-                  return _context.abrupt("return", {
-                    done: true,
-                    value: null
-                  });
-                case 6:
-                  _values = values, _values2 = _toArray(_values), value = _values2[0], rest = _values2.slice(1);
-                  values = rest;
-                  return _context.abrupt("return", {
-                    done: false,
-                    value: value
-                  });
-                case 9:
-                case "end":
-                  return _context.stop();
-              }
-            }, _callee);
-          }))();
-        }
-      };
-      return asyncIterator;
-    });
-  });
-};
-var RakunSourceBuildImpl = /*#__PURE__*/function () {
-  function RakunSourceBuildImpl(calback) {
-    _classCallCheck(this, RakunSourceBuildImpl);
-    this.calback = calback;
-    _defineProperty(this, WrappedValue_OPAQUE, 'sourceBuild');
-  }
-  _createClass(RakunSourceBuildImpl, [{
-    key: "switchIfEmpty",
-    value: function switchIfEmpty(source) {
-      var _this = this;
-      return fromAsyncIterator(function (ctx) {
-        var it = _this.asyncIterator(ctx);
-        var index = 0;
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
-                var item;
-                return regenerator.wrap(function _callee2$(_context2) {
-                  while (1) switch (_context2.prev = _context2.next) {
-                    case 0:
-                      _context2.next = 2;
-                      return it.next();
-                    case 2:
-                      item = _context2.sent;
-                      if (!(item.done && index == 0)) {
-                        _context2.next = 8;
-                        break;
-                      }
-                      it = source.asyncIterator(ctx);
-                      _context2.next = 7;
-                      return it.next();
-                    case 7:
-                      item = _context2.sent;
-                    case 8:
-                      index++;
-                      return _context2.abrupt("return", item);
-                    case 10:
-                    case "end":
-                      return _context2.stop();
-                  }
-                }, _callee2);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "defaultIfEmpty",
-    value: function defaultIfEmpty(value) {
-      return this.switchIfEmpty(fromCallback(function () {
-        return [value];
-      }));
-    }
-  }, {
-    key: "zip",
-    value: function zip() {
-      var _this2 = this;
-      for (var _len2 = arguments.length, sources = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        sources[_key2] = arguments[_key2];
-      }
-      return fromAsyncIterator(function (ctx) {
-        var it = _this2.asyncIterator(ctx);
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3() {
-                var item, value;
-                return regenerator.wrap(function _callee3$(_context3) {
-                  while (1) switch (_context3.prev = _context3.next) {
-                    case 0:
-                      _context3.next = 2;
-                      return it.next();
-                    case 2:
-                      item = _context3.sent;
-                      if (!item.done) {
-                        _context3.next = 5;
-                        break;
-                      }
-                      return _context3.abrupt("return", item);
-                    case 5:
-                      _context3.t0 = [item.value];
-                      _context3.t1 = _toConsumableArray;
-                      _context3.next = 9;
-                      return Promise.all(sources.map(function (source) {
-                        return source.asyncIterator(ctx).next();
-                      })).then(function (array) {
-                        return array.map(function (item) {
-                          return item.done ? null : item.value;
-                        });
-                      });
-                    case 9:
-                      _context3.t2 = _context3.sent;
-                      _context3.t3 = (0, _context3.t1)(_context3.t2);
-                      value = _context3.t0.concat.call(_context3.t0, _context3.t3);
-                      return _context3.abrupt("return", {
-                        done: item.done,
-                        value: value
-                      });
-                    case 13:
-                    case "end":
-                      return _context3.stop();
-                  }
-                }, _callee3);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "zipWhen",
-    value: function zipWhen() {
-      var _this3 = this;
-      for (var _len3 = arguments.length, sourceFns = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        sourceFns[_key3] = arguments[_key3];
-      }
-      return fromAsyncIterator(function (ctx) {
-        var it = _this3.asyncIterator(ctx);
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4() {
-                var item, value;
-                return regenerator.wrap(function _callee4$(_context4) {
-                  while (1) switch (_context4.prev = _context4.next) {
-                    case 0:
-                      _context4.next = 2;
-                      return it.next();
-                    case 2:
-                      item = _context4.sent;
-                      if (!item.done) {
-                        _context4.next = 5;
-                        break;
-                      }
-                      return _context4.abrupt("return", item);
-                    case 5:
-                      _context4.t0 = [item.value];
-                      _context4.t1 = _toConsumableArray;
-                      _context4.next = 9;
-                      return Promise.all(sourceFns.map(function (fn) {
-                        return fn(item.value).asyncIterator(ctx).next();
-                      })).then(function (array) {
-                        return array.map(function (item) {
-                          return item.done ? null : item.value;
-                        });
-                      });
-                    case 9:
-                      _context4.t2 = _context4.sent;
-                      _context4.t3 = (0, _context4.t1)(_context4.t2);
-                      value = _context4.t0.concat.call(_context4.t0, _context4.t3);
-                      return _context4.abrupt("return", {
-                        done: item.done,
-                        value: value
-                      });
-                    case 13:
-                    case "end":
-                      return _context4.stop();
-                  }
-                }, _callee4);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "flatFilter",
-    value: function flatFilter(fn) {
-      var _this4 = this;
-      return fromAsyncIterator(function (ctx) {
-        var it = _this4.asyncIterator(ctx);
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee5() {
-                var item, b;
-                return regenerator.wrap(function _callee5$(_context5) {
-                  while (1) switch (_context5.prev = _context5.next) {
-                    case 0:
-                      _context5.next = 2;
-                      return it.next();
-                    case 2:
-                      item = _context5.sent;
-                      if (!item.done) {
-                        _context5.next = 5;
-                        break;
-                      }
-                      return _context5.abrupt("return", item);
-                    case 5:
-                      _context5.next = 7;
-                      return fn(item.value).asyncIterator(ctx);
-                    case 7:
-                      _context5.next = 9;
-                      return _context5.sent.next();
-                    case 9:
-                      b = _context5.sent;
-                      if (b.value) {
-                        _context5.next = 14;
-                        break;
-                      }
-                      _context5.next = 13;
-                      return asyncIterator.next();
-                    case 13:
-                      return _context5.abrupt("return", _context5.sent);
-                    case 14:
-                      return _context5.abrupt("return", item);
-                    case 15:
-                    case "end":
-                      return _context5.stop();
-                  }
-                }, _callee5);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "filter",
-    value: function filter(fn) {
-      var _this5 = this;
-      return fromAsyncIterator(function (ctx) {
-        var it = _this5.asyncIterator(ctx);
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6() {
-                var item, b;
-                return regenerator.wrap(function _callee6$(_context6) {
-                  while (1) switch (_context6.prev = _context6.next) {
-                    case 0:
-                      _context6.next = 2;
-                      return it.next();
-                    case 2:
-                      item = _context6.sent;
-                      if (!item.done) {
-                        _context6.next = 5;
-                        break;
-                      }
-                      return _context6.abrupt("return", item);
-                    case 5:
-                      b = fn(item.value);
-                      if (b) {
-                        _context6.next = 10;
-                        break;
-                      }
-                      _context6.next = 9;
-                      return asyncIterator.next();
-                    case 9:
-                      return _context6.abrupt("return", _context6.sent);
-                    case 10:
-                      return _context6.abrupt("return", item);
-                    case 11:
-                    case "end":
-                      return _context6.stop();
-                  }
-                }, _callee6);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "thenReturn",
-    value: function thenReturn(value) {
-      var sourceOld = this;
-      return fromAsyncIterator(function (ctx) {
-        var finish = false;
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7() {
-                return regenerator.wrap(function _callee7$(_context7) {
-                  while (1) switch (_context7.prev = _context7.next) {
-                    case 0:
-                      if (finish) {
-                        _context7.next = 5;
-                        break;
-                      }
-                      finish = true;
-                      _context7.next = 4;
-                      return sourceOld.block(ctx);
-                    case 4:
-                      return _context7.abrupt("return", {
-                        value: value
-                      });
-                    case 5:
-                      return _context7.abrupt("return", {
-                        done: true,
-                        value: null
-                      });
-                    case 6:
-                    case "end":
-                      return _context7.stop();
-                  }
-                }, _callee7);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "then",
-    value: function then(source) {
-      if (!source) return this.thenReturn(Void);
-      var sourceOld = this;
-      return fromAsyncIterator(function (ctx) {
-        var finish = false;
-        var it2 = source.asyncIterator(ctx);
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee8() {
-                var item2;
-                return regenerator.wrap(function _callee8$(_context8) {
-                  while (1) switch (_context8.prev = _context8.next) {
-                    case 0:
-                      if (finish) {
-                        _context8.next = 4;
-                        break;
-                      }
-                      finish = true;
-                      _context8.next = 4;
-                      return sourceOld.block(ctx);
-                    case 4:
-                      _context8.next = 6;
-                      return it2.next();
-                    case 6:
-                      item2 = _context8.sent;
-                      if (!item2.done) {
-                        _context8.next = 9;
-                        break;
-                      }
-                      return _context8.abrupt("return", item2);
-                    case 9:
-                      return _context8.abrupt("return", item2);
-                    case 10:
-                    case "end":
-                      return _context8.stop();
-                  }
-                }, _callee8);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "onErrorResume",
-    value: function onErrorResume(errorType, fn) {
-      var _this6 = this;
-      return fromAsyncIterator(function (ctx) {
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var iterator = _this6.asyncIterator(ctx);
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee9() {
-                return regenerator.wrap(function _callee9$(_context9) {
-                  while (1) switch (_context9.prev = _context9.next) {
-                    case 0:
-                      _context9.prev = 0;
-                      _context9.next = 3;
-                      return iterator.next();
-                    case 3:
-                      return _context9.abrupt("return", _context9.sent);
-                    case 6:
-                      _context9.prev = 6;
-                      _context9.t0 = _context9["catch"](0);
-                      if (!(_context9.t0 instanceof errorType)) {
-                        _context9.next = 12;
-                        break;
-                      }
-                      _context9.next = 11;
-                      return fn(_context9.t0).asyncIterator(ctx).next();
-                    case 11:
-                      return _context9.abrupt("return", _context9.sent);
-                    case 12:
-                      throw _context9.t0;
-                    case 13:
-                    case "end":
-                      return _context9.stop();
-                  }
-                }, _callee9, null, [[0, 6]]);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "doOnNext",
-    value: function doOnNext(handler) {
-      var _this7 = this;
-      return fromAsyncIterator(function (ctx) {
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var iterator = _this7.asyncIterator(ctx);
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee10() {
-                var item;
-                return regenerator.wrap(function _callee10$(_context10) {
-                  while (1) switch (_context10.prev = _context10.next) {
-                    case 0:
-                      _context10.next = 2;
-                      return iterator.next();
-                    case 2:
-                      item = _context10.sent;
-                      if (!item.done) {
-                        handler(item.value);
-                      }
-                      return _context10.abrupt("return", item);
-                    case 5:
-                    case "end":
-                      return _context10.stop();
-                  }
-                }, _callee10);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "doOnError",
-    value: function doOnError(handler) {
-      var _this8 = this;
-      return fromAsyncIterator(function (ctx) {
-        var it = _this8.asyncIterator(ctx);
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee11() {
-                return regenerator.wrap(function _callee11$(_context11) {
-                  while (1) switch (_context11.prev = _context11.next) {
-                    case 0:
-                      _context11.prev = 0;
-                      _context11.next = 3;
-                      return it.next();
-                    case 3:
-                      return _context11.abrupt("return", _context11.sent);
-                    case 6:
-                      _context11.prev = 6;
-                      _context11.t0 = _context11["catch"](0);
-                      handler(_context11.t0);
-                      throw _context11.t0;
-                    case 10:
-                    case "end":
-                      return _context11.stop();
-                  }
-                }, _callee11, null, [[0, 6]]);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "pipe",
-    value: function pipe(fn) {
-      var _this9 = this;
-      return fromAsyncIterator(function (ctx) {
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var it = _this9.asyncIterator(ctx);
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee12() {
-                var item;
-                return regenerator.wrap(function _callee12$(_context12) {
-                  while (1) switch (_context12.prev = _context12.next) {
-                    case 0:
-                      _context12.next = 2;
-                      return it.next();
-                    case 2:
-                      item = _context12.sent;
-                      if (!item.done) {
-                        _context12.next = 5;
-                        break;
-                      }
-                      return _context12.abrupt("return", item);
-                    case 5:
-                      _context12.t0 = item.done;
-                      _context12.next = 8;
-                      return fn(item.value);
-                    case 8:
-                      _context12.t1 = _context12.sent;
-                      return _context12.abrupt("return", {
-                        done: _context12.t0,
-                        value: _context12.t1
-                      });
-                    case 10:
-                    case "end":
-                      return _context12.stop();
-                  }
-                }, _callee12);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "flatPipe",
-    value: function flatPipe(fn) {
-      var _this10 = this;
-      return fromAsyncIterator(function (ctx) {
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var iterator = _this10.asyncIterator(ctx);
-          var item = null; // (1)
-          var iterator2 = null; // (1)
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee13() {
-                var item2;
-                return regenerator.wrap(function _callee13$(_context13) {
-                  while (1) switch (_context13.prev = _context13.next) {
-                    case 0:
-                      if (!(item == null)) {
-                        _context13.next = 4;
-                        break;
-                      }
-                      _context13.next = 3;
-                      return iterator.next();
-                    case 3:
-                      item = _context13.sent;
-                    case 4:
-                      if (!item.done) {
-                        _context13.next = 6;
-                        break;
-                      }
-                      return _context13.abrupt("return", {
-                        done: true,
-                        value: item.value
-                      });
-                    case 6:
-                      if (iterator2 == null) {
-                        iterator2 = fn(item.value).asyncIterator(ctx);
-                      }
-                      _context13.next = 9;
-                      return iterator2.next();
-                    case 9:
-                      item2 = _context13.sent;
-                      if (!item2.done) {
-                        _context13.next = 18;
-                        break;
-                      }
-                      iterator2 = null;
-                      item = null;
-                      _context13.next = 15;
-                      return asyncIterator.next();
-                    case 15:
-                      return _context13.abrupt("return", _context13.sent);
-                    case 18:
-                      return _context13.abrupt("return", {
-                        done: item2.done,
-                        value: item2.value
-                      });
-                    case 19:
-                    case "end":
-                      return _context13.stop();
-                  }
-                }, _callee13);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "blockFirst",
-    value: function () {
-      var _blockFirst = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee14(contextManager) {
-        var array;
-        return regenerator.wrap(function _callee14$(_context14) {
-          while (1) switch (_context14.prev = _context14.next) {
-            case 0:
-              _context14.next = 2;
-              return this.block(contextManager);
-            case 2:
-              array = _context14.sent;
-              return _context14.abrupt("return", array[0]);
-            case 4:
-            case "end":
-              return _context14.stop();
-          }
-        }, _callee14, this);
-      }));
-      function blockFirst(_x) {
-        return _blockFirst.apply(this, arguments);
-      }
-      return blockFirst;
-    }()
-  }, {
-    key: "block",
-    value: function () {
-      var _block = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee15(contextManager) {
-        var arr, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, i;
-        return regenerator.wrap(function _callee15$(_context15) {
-          while (1) switch (_context15.prev = _context15.next) {
-            case 0:
-              arr = [];
-              _iteratorAbruptCompletion = false;
-              _didIteratorError = false;
-              _context15.prev = 3;
-              _context15.t0 = _asyncIterator;
-              _context15.next = 7;
-              return this.calback(contextManager);
-            case 7:
-              _context15.t1 = _context15.sent;
-              _iterator = (0, _context15.t0)(_context15.t1);
-            case 9:
-              _context15.next = 11;
-              return _iterator.next();
-            case 11:
-              if (!(_iteratorAbruptCompletion = !(_step = _context15.sent).done)) {
-                _context15.next = 17;
-                break;
-              }
-              i = _step.value;
-              arr.push(i);
-            case 14:
-              _iteratorAbruptCompletion = false;
-              _context15.next = 9;
-              break;
-            case 17:
-              _context15.next = 23;
-              break;
-            case 19:
-              _context15.prev = 19;
-              _context15.t2 = _context15["catch"](3);
-              _didIteratorError = true;
-              _iteratorError = _context15.t2;
-            case 23:
-              _context15.prev = 23;
-              _context15.prev = 24;
-              if (!(_iteratorAbruptCompletion && _iterator["return"] != null)) {
-                _context15.next = 28;
-                break;
-              }
-              _context15.next = 28;
-              return _iterator["return"]();
-            case 28:
-              _context15.prev = 28;
-              if (!_didIteratorError) {
-                _context15.next = 31;
-                break;
-              }
-              throw _iteratorError;
-            case 31:
-              return _context15.finish(28);
-            case 32:
-              return _context15.finish(23);
-            case 33:
-              return _context15.abrupt("return", arr);
-            case 34:
-            case "end":
-              return _context15.stop();
-          }
-        }, _callee15, this, [[3, 19, 23, 33], [24,, 28, 32]]);
-      }));
-      function block(_x2) {
-        return _block.apply(this, arguments);
-      }
-      return block;
-    }()
-  }, {
-    key: "asyncIterator",
-    value: function asyncIterator(ctx) {
-      return this.calback(ctx)[Symbol.asyncIterator]();
-    }
-  }]);
-  return RakunSourceBuildImpl;
-}();
-
-var StaticSourceBuildImpl = /*#__PURE__*/function () {
-  function StaticSourceBuildImpl() {
-    _classCallCheck(this, StaticSourceBuildImpl);
-    _defineProperty(this, "fromCallback", fromCallback);
-  }
-  _createClass(StaticSourceBuildImpl, [{
-    key: "just",
-    value: function just() {
-      for (var _len = arguments.length, promises = new Array(_len), _key = 0; _key < _len; _key++) {
-        promises[_key] = arguments[_key];
-      }
-      return fromCallback(function () {
-        return promises;
-      });
-    }
-  }, {
-    key: "fromArray",
-    value: function fromArray(values) {
-      return fromCallback(function () {
-        return values;
-      });
-    }
-  }, {
-    key: "then",
-    value: function then() {
-      return fromCallback(function () {
-        return [Void];
-      });
-    }
-  }, {
-    key: "empty",
-    value: function empty() {
-      return fromCallback(function () {
-        return [];
-      });
-    }
-  }, {
-    key: "zip",
-    value: function zip() {
-      for (var _len2 = arguments.length, sources = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        sources[_key2] = arguments[_key2];
-      }
-      return fromAsyncIterator(function (ctx) {
-        var finish = false;
-        return _defineProperty({}, Symbol.asyncIterator, function () {
-          var asyncIterator = {
-            next: function next() {
-              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
-                var value;
-                return regenerator.wrap(function _callee$(_context) {
-                  while (1) switch (_context.prev = _context.next) {
-                    case 0:
-                      if (finish) {
-                        _context.next = 6;
-                        break;
-                      }
-                      finish = true;
-                      _context.next = 4;
-                      return Promise.all(sources.map(function (source) {
-                        return source.asyncIterator(ctx).next();
-                      })).then(function (array) {
-                        return array.map(function (item) {
-                          return item.done ? null : item.value;
-                        });
-                      });
-                    case 4:
-                      value = _context.sent;
-                      return _context.abrupt("return", {
-                        done: false,
-                        value: value
-                      });
-                    case 6:
-                      return _context.abrupt("return", {
-                        done: true,
-                        value: null
-                      });
-                    case 7:
-                    case "end":
-                      return _context.stop();
-                  }
-                }, _callee);
-              }))();
-            }
-          };
-          return asyncIterator;
-        });
-      });
-    }
-  }, {
-    key: "error",
-    value: function error(_error) {
-      return fromCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
-        return regenerator.wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              throw _error;
-            case 1:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      })));
-    }
-  }]);
-  return StaticSourceBuildImpl;
-}();
-var sourceBuild$1 = new StaticSourceBuildImpl();
-
 var RakunContextManagerImpl = /*#__PURE__*/function () {
   function RakunContextManagerImpl() {
     _classCallCheck(this, RakunContextManagerImpl);
@@ -1368,117 +496,1070 @@ var RakunContextManagerImpl = /*#__PURE__*/function () {
   return RakunContextManagerImpl;
 }();
 
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _toArray(arr) {
+  return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+}
+
+function _asyncIterator(iterable) { var method, async, sync, retry = 2; for ("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;) { if (async && null != (method = iterable[async])) return method.call(iterable); if (sync && null != (method = iterable[sync])) return new AsyncFromSyncIterator(method.call(iterable)); async = "@@asyncIterator", sync = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
+function AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var done = r.done; return Promise.resolve(r.value).then(function (value) { return { value: value, done: done }; }); } return AsyncFromSyncIterator = function AsyncFromSyncIterator(s) { this.s = s, this.n = s.next; }, AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(value) { var ret = this.s["return"]; return void 0 === ret ? Promise.resolve({ value: value, done: !0 }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments)); }, "throw": function _throw(value) { var thr = this.s["return"]; return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments)); } }, new AsyncFromSyncIterator(s); }
+var fromAsyncIterator = function fromAsyncIterator(execute) {
+  return new RakunAsyncIteratorImpl(execute);
+};
+var just = function just() {
+  for (var _len = arguments.length, promises = new Array(_len), _key = 0; _key < _len; _key++) {
+    promises[_key] = arguments[_key];
+  }
+  return fromCallback(function () {
+    return promises;
+  });
+};
+var fromArray = function fromArray(values) {
+  return fromCallback(function () {
+    return values;
+  });
+};
+var then = function then() {
+  return fromCallback(function () {
+    return [Void];
+  });
+};
+var empty = function empty() {
+  return fromCallback(function () {
+    return [];
+  });
+};
+var zip = function zip() {
+  for (var _len2 = arguments.length, sources = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    sources[_key2] = arguments[_key2];
+  }
+  return fromAsyncIterator(function (ctx) {
+    var finish = false;
+    return _defineProperty({}, Symbol.asyncIterator, function () {
+      var asyncIterator = {
+        next: function next() {
+          return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+            var _value;
+            return regenerator.wrap(function _callee$(_context) {
+              while (1) switch (_context.prev = _context.next) {
+                case 0:
+                  if (finish) {
+                    _context.next = 6;
+                    break;
+                  }
+                  finish = true;
+                  _context.next = 4;
+                  return Promise.all(sources.map(function (source) {
+                    return source.iterator(ctx).next();
+                  })).then(function (array) {
+                    return array.map(function (item) {
+                      return item.done ? null : item.value;
+                    });
+                  });
+                case 4:
+                  _value = _context.sent;
+                  return _context.abrupt("return", {
+                    done: false,
+                    value: _value
+                  });
+                case 6:
+                  return _context.abrupt("return", {
+                    done: true,
+                    value: null
+                  });
+                case 7:
+                case "end":
+                  return _context.stop();
+              }
+            }, _callee);
+          }))();
+        }
+      };
+      return asyncIterator;
+    });
+  });
+};
+var error = function error(_error) {
+  return fromCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
+    return regenerator.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          throw _error;
+        case 1:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  })));
+};
+var fromCallback = function fromCallback() {
+  for (var _len3 = arguments.length, callbacks = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    callbacks[_key3] = arguments[_key3];
+  }
+  return fromAsyncIterator(function (ctx) {
+    var values = null;
+    return _defineProperty({}, Symbol.asyncIterator, function () {
+      var asyncIterator = {
+        next: function next() {
+          return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3() {
+            var _values, _values2, value, rest;
+            return regenerator.wrap(function _callee3$(_context3) {
+              while (1) switch (_context3.prev = _context3.next) {
+                case 0:
+                  if (values) {
+                    _context3.next = 4;
+                    break;
+                  }
+                  _context3.next = 3;
+                  return Promise.resolve(callbacks.map(function (callback) {
+                    return Promise.resolve(callback(ctx));
+                  })).then(function (a) {
+                    return Promise.all(a);
+                  }).then(function (a) {
+                    return Promise.all(a.flat().map(function (e) {
+                      return Promise.resolve(e);
+                    }));
+                  });
+                case 3:
+                  values = _context3.sent;
+                case 4:
+                  if (!(!values || values.length == 0)) {
+                    _context3.next = 6;
+                    break;
+                  }
+                  return _context3.abrupt("return", {
+                    done: true,
+                    value: null
+                  });
+                case 6:
+                  _values = values, _values2 = _toArray(_values), value = _values2[0], rest = _values2.slice(1);
+                  values = rest;
+                  return _context3.abrupt("return", {
+                    done: false,
+                    value: value
+                  });
+                case 9:
+                case "end":
+                  return _context3.stop();
+              }
+            }, _callee3);
+          }))();
+        }
+      };
+      return asyncIterator;
+    });
+  });
+};
+var RakunAsyncIteratorImpl = /*#__PURE__*/function () {
+  function RakunAsyncIteratorImpl(callback) {
+    _classCallCheck(this, RakunAsyncIteratorImpl);
+    this.callback = callback;
+    _defineProperty(this, WrappedValue_OPAQUE, 'asyncIterator');
+  }
+  _createClass(RakunAsyncIteratorImpl, [{
+    key: "switchIfEmpty",
+    value: function switchIfEmpty(source) {
+      var _this = this;
+      return fromAsyncIterator(function (ctx) {
+        var it = _this.iterator(ctx);
+        var index = 0;
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4() {
+                var item;
+                return regenerator.wrap(function _callee4$(_context4) {
+                  while (1) switch (_context4.prev = _context4.next) {
+                    case 0:
+                      _context4.next = 2;
+                      return it.next();
+                    case 2:
+                      item = _context4.sent;
+                      if (!(item.done && index == 0)) {
+                        _context4.next = 8;
+                        break;
+                      }
+                      it = source.iterator(ctx);
+                      _context4.next = 7;
+                      return it.next();
+                    case 7:
+                      item = _context4.sent;
+                    case 8:
+                      index++;
+                      return _context4.abrupt("return", item);
+                    case 10:
+                    case "end":
+                      return _context4.stop();
+                  }
+                }, _callee4);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "defaultIfEmpty",
+    value: function defaultIfEmpty(value) {
+      return this.switchIfEmpty(fromCallback(function () {
+        return [value];
+      }));
+    }
+  }, {
+    key: "zip",
+    value: function zip() {
+      var _this2 = this;
+      for (var _len4 = arguments.length, sources = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        sources[_key4] = arguments[_key4];
+      }
+      return fromAsyncIterator(function (ctx) {
+        var it = _this2.iterator(ctx);
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee5() {
+                var item, value;
+                return regenerator.wrap(function _callee5$(_context5) {
+                  while (1) switch (_context5.prev = _context5.next) {
+                    case 0:
+                      _context5.next = 2;
+                      return it.next();
+                    case 2:
+                      item = _context5.sent;
+                      if (!item.done) {
+                        _context5.next = 5;
+                        break;
+                      }
+                      return _context5.abrupt("return", item);
+                    case 5:
+                      _context5.t0 = [item.value];
+                      _context5.t1 = _toConsumableArray;
+                      _context5.next = 9;
+                      return Promise.all(sources.map(function (source) {
+                        return source.iterator(ctx).next();
+                      })).then(function (array) {
+                        return array.map(function (item) {
+                          return item.done ? null : item.value;
+                        });
+                      });
+                    case 9:
+                      _context5.t2 = _context5.sent;
+                      _context5.t3 = (0, _context5.t1)(_context5.t2);
+                      value = _context5.t0.concat.call(_context5.t0, _context5.t3);
+                      return _context5.abrupt("return", {
+                        done: item.done,
+                        value: value
+                      });
+                    case 13:
+                    case "end":
+                      return _context5.stop();
+                  }
+                }, _callee5);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "zipWhen",
+    value: function zipWhen() {
+      var _this3 = this;
+      for (var _len5 = arguments.length, sourceFns = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        sourceFns[_key5] = arguments[_key5];
+      }
+      return fromAsyncIterator(function (ctx) {
+        var it = _this3.iterator(ctx);
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6() {
+                var item, value;
+                return regenerator.wrap(function _callee6$(_context6) {
+                  while (1) switch (_context6.prev = _context6.next) {
+                    case 0:
+                      _context6.next = 2;
+                      return it.next();
+                    case 2:
+                      item = _context6.sent;
+                      if (!item.done) {
+                        _context6.next = 5;
+                        break;
+                      }
+                      return _context6.abrupt("return", item);
+                    case 5:
+                      _context6.t0 = [item.value];
+                      _context6.t1 = _toConsumableArray;
+                      _context6.next = 9;
+                      return Promise.all(sourceFns.map(function (fn) {
+                        return fn(item.value).iterator(ctx).next();
+                      })).then(function (array) {
+                        return array.map(function (item) {
+                          return item.done ? null : item.value;
+                        });
+                      });
+                    case 9:
+                      _context6.t2 = _context6.sent;
+                      _context6.t3 = (0, _context6.t1)(_context6.t2);
+                      value = _context6.t0.concat.call(_context6.t0, _context6.t3);
+                      return _context6.abrupt("return", {
+                        done: item.done,
+                        value: value
+                      });
+                    case 13:
+                    case "end":
+                      return _context6.stop();
+                  }
+                }, _callee6);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "flatFilter",
+    value: function flatFilter(fn) {
+      var _this4 = this;
+      return fromAsyncIterator(function (ctx) {
+        var it = _this4.iterator(ctx);
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7() {
+                var item, b;
+                return regenerator.wrap(function _callee7$(_context7) {
+                  while (1) switch (_context7.prev = _context7.next) {
+                    case 0:
+                      _context7.next = 2;
+                      return it.next();
+                    case 2:
+                      item = _context7.sent;
+                      if (!item.done) {
+                        _context7.next = 5;
+                        break;
+                      }
+                      return _context7.abrupt("return", item);
+                    case 5:
+                      _context7.next = 7;
+                      return fn(item.value).iterator(ctx);
+                    case 7:
+                      _context7.next = 9;
+                      return _context7.sent.next();
+                    case 9:
+                      b = _context7.sent;
+                      if (b.value) {
+                        _context7.next = 14;
+                        break;
+                      }
+                      _context7.next = 13;
+                      return asyncIterator.next();
+                    case 13:
+                      return _context7.abrupt("return", _context7.sent);
+                    case 14:
+                      return _context7.abrupt("return", item);
+                    case 15:
+                    case "end":
+                      return _context7.stop();
+                  }
+                }, _callee7);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "filter",
+    value: function filter(fn) {
+      var _this5 = this;
+      return fromAsyncIterator(function (ctx) {
+        var it = _this5.iterator(ctx);
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee8() {
+                var item, b;
+                return regenerator.wrap(function _callee8$(_context8) {
+                  while (1) switch (_context8.prev = _context8.next) {
+                    case 0:
+                      _context8.next = 2;
+                      return it.next();
+                    case 2:
+                      item = _context8.sent;
+                      if (!item.done) {
+                        _context8.next = 5;
+                        break;
+                      }
+                      return _context8.abrupt("return", item);
+                    case 5:
+                      b = fn(item.value);
+                      if (b) {
+                        _context8.next = 10;
+                        break;
+                      }
+                      _context8.next = 9;
+                      return asyncIterator.next();
+                    case 9:
+                      return _context8.abrupt("return", _context8.sent);
+                    case 10:
+                      return _context8.abrupt("return", item);
+                    case 11:
+                    case "end":
+                      return _context8.stop();
+                  }
+                }, _callee8);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "thenReturn",
+    value: function thenReturn(value) {
+      var sourceOld = this;
+      return fromAsyncIterator(function (ctx) {
+        var finish = false;
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee9() {
+                return regenerator.wrap(function _callee9$(_context9) {
+                  while (1) switch (_context9.prev = _context9.next) {
+                    case 0:
+                      if (finish) {
+                        _context9.next = 5;
+                        break;
+                      }
+                      finish = true;
+                      _context9.next = 4;
+                      return sourceOld.block(ctx);
+                    case 4:
+                      return _context9.abrupt("return", {
+                        value: value
+                      });
+                    case 5:
+                      return _context9.abrupt("return", {
+                        done: true,
+                        value: null
+                      });
+                    case 6:
+                    case "end":
+                      return _context9.stop();
+                  }
+                }, _callee9);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "then",
+    value: function then(source) {
+      if (!source) return this.thenReturn(Void);
+      var sourceOld = this;
+      return fromAsyncIterator(function (ctx) {
+        var finish = false;
+        var it2 = source.iterator(ctx);
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee10() {
+                var item2;
+                return regenerator.wrap(function _callee10$(_context10) {
+                  while (1) switch (_context10.prev = _context10.next) {
+                    case 0:
+                      if (finish) {
+                        _context10.next = 4;
+                        break;
+                      }
+                      finish = true;
+                      _context10.next = 4;
+                      return sourceOld.block(ctx);
+                    case 4:
+                      _context10.next = 6;
+                      return it2.next();
+                    case 6:
+                      item2 = _context10.sent;
+                      if (!item2.done) {
+                        _context10.next = 9;
+                        break;
+                      }
+                      return _context10.abrupt("return", item2);
+                    case 9:
+                      return _context10.abrupt("return", item2);
+                    case 10:
+                    case "end":
+                      return _context10.stop();
+                  }
+                }, _callee10);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "onErrorResume",
+    value: function onErrorResume(errorType, fn) {
+      var _this6 = this;
+      return fromAsyncIterator(function (ctx) {
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var iterator = _this6.iterator(ctx);
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee11() {
+                return regenerator.wrap(function _callee11$(_context11) {
+                  while (1) switch (_context11.prev = _context11.next) {
+                    case 0:
+                      _context11.prev = 0;
+                      _context11.next = 3;
+                      return iterator.next();
+                    case 3:
+                      return _context11.abrupt("return", _context11.sent);
+                    case 6:
+                      _context11.prev = 6;
+                      _context11.t0 = _context11["catch"](0);
+                      if (!(_context11.t0 instanceof errorType)) {
+                        _context11.next = 12;
+                        break;
+                      }
+                      _context11.next = 11;
+                      return fn(_context11.t0).iterator(ctx).next();
+                    case 11:
+                      return _context11.abrupt("return", _context11.sent);
+                    case 12:
+                      throw _context11.t0;
+                    case 13:
+                    case "end":
+                      return _context11.stop();
+                  }
+                }, _callee11, null, [[0, 6]]);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "doOnNext",
+    value: function doOnNext(handler) {
+      var _this7 = this;
+      return fromAsyncIterator(function (ctx) {
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var iterator = _this7.iterator(ctx);
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee12() {
+                var item;
+                return regenerator.wrap(function _callee12$(_context12) {
+                  while (1) switch (_context12.prev = _context12.next) {
+                    case 0:
+                      _context12.next = 2;
+                      return iterator.next();
+                    case 2:
+                      item = _context12.sent;
+                      if (!item.done) {
+                        handler(item.value);
+                      }
+                      return _context12.abrupt("return", item);
+                    case 5:
+                    case "end":
+                      return _context12.stop();
+                  }
+                }, _callee12);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "doOnError",
+    value: function doOnError(handler) {
+      var _this8 = this;
+      return fromAsyncIterator(function (ctx) {
+        var it = _this8.iterator(ctx);
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee13() {
+                return regenerator.wrap(function _callee13$(_context13) {
+                  while (1) switch (_context13.prev = _context13.next) {
+                    case 0:
+                      _context13.prev = 0;
+                      _context13.next = 3;
+                      return it.next();
+                    case 3:
+                      return _context13.abrupt("return", _context13.sent);
+                    case 6:
+                      _context13.prev = 6;
+                      _context13.t0 = _context13["catch"](0);
+                      handler(_context13.t0);
+                      throw _context13.t0;
+                    case 10:
+                    case "end":
+                      return _context13.stop();
+                  }
+                }, _callee13, null, [[0, 6]]);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "pipe",
+    value: function pipe(fn) {
+      var _this9 = this;
+      return fromAsyncIterator(function (ctx) {
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var it = _this9.iterator(ctx);
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee14() {
+                var item;
+                return regenerator.wrap(function _callee14$(_context14) {
+                  while (1) switch (_context14.prev = _context14.next) {
+                    case 0:
+                      _context14.next = 2;
+                      return it.next();
+                    case 2:
+                      item = _context14.sent;
+                      if (!item.done) {
+                        _context14.next = 5;
+                        break;
+                      }
+                      return _context14.abrupt("return", item);
+                    case 5:
+                      _context14.t0 = item.done;
+                      _context14.next = 8;
+                      return fn(item.value);
+                    case 8:
+                      _context14.t1 = _context14.sent;
+                      return _context14.abrupt("return", {
+                        done: _context14.t0,
+                        value: _context14.t1
+                      });
+                    case 10:
+                    case "end":
+                      return _context14.stop();
+                  }
+                }, _callee14);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "flatPipe",
+    value: function flatPipe(fn) {
+      var _this10 = this;
+      return fromAsyncIterator(function (ctx) {
+        return _defineProperty({}, Symbol.asyncIterator, function () {
+          var iterator = _this10.iterator(ctx);
+          var item = null; // (1)
+          var iterator2 = null; // (1)
+          var asyncIterator = {
+            next: function next() {
+              return _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee15() {
+                var item2;
+                return regenerator.wrap(function _callee15$(_context15) {
+                  while (1) switch (_context15.prev = _context15.next) {
+                    case 0:
+                      if (!(item == null)) {
+                        _context15.next = 4;
+                        break;
+                      }
+                      _context15.next = 3;
+                      return iterator.next();
+                    case 3:
+                      item = _context15.sent;
+                    case 4:
+                      if (!item.done) {
+                        _context15.next = 6;
+                        break;
+                      }
+                      return _context15.abrupt("return", {
+                        done: true,
+                        value: item.value
+                      });
+                    case 6:
+                      if (iterator2 == null) {
+                        iterator2 = fn(item.value).iterator(ctx);
+                      }
+                      _context15.next = 9;
+                      return iterator2.next();
+                    case 9:
+                      item2 = _context15.sent;
+                      if (!item2.done) {
+                        _context15.next = 18;
+                        break;
+                      }
+                      iterator2 = null;
+                      item = null;
+                      _context15.next = 15;
+                      return asyncIterator.next();
+                    case 15:
+                      return _context15.abrupt("return", _context15.sent);
+                    case 18:
+                      return _context15.abrupt("return", {
+                        done: item2.done,
+                        value: item2.value
+                      });
+                    case 19:
+                    case "end":
+                      return _context15.stop();
+                  }
+                }, _callee15);
+              }))();
+            }
+          };
+          return asyncIterator;
+        });
+      });
+    }
+  }, {
+    key: "blockFirst",
+    value: function () {
+      var _blockFirst = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee16(contextManager) {
+        var array;
+        return regenerator.wrap(function _callee16$(_context16) {
+          while (1) switch (_context16.prev = _context16.next) {
+            case 0:
+              _context16.next = 2;
+              return this.block(contextManager);
+            case 2:
+              array = _context16.sent;
+              return _context16.abrupt("return", array[0]);
+            case 4:
+            case "end":
+              return _context16.stop();
+          }
+        }, _callee16, this);
+      }));
+      function blockFirst(_x) {
+        return _blockFirst.apply(this, arguments);
+      }
+      return blockFirst;
+    }()
+  }, {
+    key: "block",
+    value: function () {
+      var _block = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee17(contextManager) {
+        var arr, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, i;
+        return regenerator.wrap(function _callee17$(_context17) {
+          while (1) switch (_context17.prev = _context17.next) {
+            case 0:
+              arr = [];
+              _iteratorAbruptCompletion = false;
+              _didIteratorError = false;
+              _context17.prev = 3;
+              _context17.t0 = _asyncIterator;
+              _context17.next = 7;
+              return this.callback(contextManager);
+            case 7:
+              _context17.t1 = _context17.sent;
+              _iterator = (0, _context17.t0)(_context17.t1);
+            case 9:
+              _context17.next = 11;
+              return _iterator.next();
+            case 11:
+              if (!(_iteratorAbruptCompletion = !(_step = _context17.sent).done)) {
+                _context17.next = 17;
+                break;
+              }
+              i = _step.value;
+              arr.push(i);
+            case 14:
+              _iteratorAbruptCompletion = false;
+              _context17.next = 9;
+              break;
+            case 17:
+              _context17.next = 23;
+              break;
+            case 19:
+              _context17.prev = 19;
+              _context17.t2 = _context17["catch"](3);
+              _didIteratorError = true;
+              _iteratorError = _context17.t2;
+            case 23:
+              _context17.prev = 23;
+              _context17.prev = 24;
+              if (!(_iteratorAbruptCompletion && _iterator["return"] != null)) {
+                _context17.next = 28;
+                break;
+              }
+              _context17.next = 28;
+              return _iterator["return"]();
+            case 28:
+              _context17.prev = 28;
+              if (!_didIteratorError) {
+                _context17.next = 31;
+                break;
+              }
+              throw _iteratorError;
+            case 31:
+              return _context17.finish(28);
+            case 32:
+              return _context17.finish(23);
+            case 33:
+              return _context17.abrupt("return", arr);
+            case 34:
+            case "end":
+              return _context17.stop();
+          }
+        }, _callee17, this, [[3, 19, 23, 33], [24,, 28, 32]]);
+      }));
+      function block(_x2) {
+        return _block.apply(this, arguments);
+      }
+      return block;
+    }()
+  }, {
+    key: "iterator",
+    value: function iterator(ctx) {
+      return this.callback(ctx)[Symbol.asyncIterator]();
+    }
+  }]);
+  return RakunAsyncIteratorImpl;
+}();
+var StaticAsyncIteratorImpl = /*#__PURE__*/_createClass(function StaticAsyncIteratorImpl() {
+  _classCallCheck(this, StaticAsyncIteratorImpl);
+  _defineProperty(this, "then", then);
+  _defineProperty(this, "empty", empty);
+  _defineProperty(this, "zip", zip);
+  _defineProperty(this, "just", just);
+  _defineProperty(this, "error", error);
+  _defineProperty(this, "fromArray", fromArray);
+  _defineProperty(this, "fromCallback", fromCallback);
+});
+
+var asyncIterator = new StaticAsyncIteratorImpl();
+
+var fromSourceBuild$1 = function fromSourceBuild(sourceBuild) {
+  return new RakunMonoImpl(sourceBuild);
+};
+var RakunStaticMonoImpl = /*#__PURE__*/function () {
+  function RakunStaticMonoImpl() {
+    _classCallCheck(this, RakunStaticMonoImpl);
+    _defineProperty(this, "fromSourceBuild", fromSourceBuild$1);
+  }
+  _createClass(RakunStaticMonoImpl, [{
+    key: "fromCallback",
+    value: function fromCallback() {
+      for (var _len = arguments.length, callbacks = new Array(_len), _key = 0; _key < _len; _key++) {
+        callbacks[_key] = arguments[_key];
+      }
+      return fromSourceBuild$1(asyncIterator.fromCallback.apply(asyncIterator, _toConsumableArray(callbacks.map(function (callback) {
+        return function (ctx) {
+          return Promise.all([callback(ctx)]);
+        };
+      }))));
+    }
+  }, {
+    key: "then",
+    value: function then() {
+      return this.fromSourceBuild(asyncIterator.then());
+    }
+  }, {
+    key: "empty",
+    value: function empty() {
+      return this.fromSourceBuild(asyncIterator.empty());
+    }
+  }, {
+    key: "zip",
+    value: function zip() {
+      return this.fromSourceBuild(asyncIterator.zip.apply(asyncIterator, arguments));
+    }
+  }, {
+    key: "just",
+    value: function just(value) {
+      return this.fromSourceBuild(asyncIterator.just(value));
+    }
+  }, {
+    key: "fromPromise",
+    value: function fromPromise(promise) {
+      return this.fromSourceBuild(asyncIterator.just(promise));
+    }
+  }, {
+    key: "error",
+    value: function (_error) {
+      function error(_x) {
+        return _error.apply(this, arguments);
+      }
+      error.toString = function () {
+        return _error.toString();
+      };
+      return error;
+    }(function (error) {
+      return this.fromSourceBuild(asyncIterator.error(error));
+    })
+  }]);
+  return RakunStaticMonoImpl;
+}();
 var RakunMonoImpl = /*#__PURE__*/function () {
-  function RakunMonoImpl(sourceBuild) {
+  function RakunMonoImpl(_asyncIterator) {
     _classCallCheck(this, RakunMonoImpl);
-    this.sourceBuild = sourceBuild;
+    this._asyncIterator = _asyncIterator;
     _defineProperty(this, WrappedValue_OPAQUE, "mono");
   }
   _createClass(RakunMonoImpl, [{
     key: "flatPipeMany",
     value: function flatPipeMany(fn) {
-      return fromSourceBuild(this.sourceBuild.flatPipe(fn));
+      return fromSourceBuild(this._asyncIterator.flatPipe(fn));
     }
   }, {
     key: "then",
     value: function then(source) {
       if (source) {
         if (source[WrappedValue_OPAQUE] == 'flux') {
-          return fromSourceBuild(this.sourceBuild.then(source));
+          return fromSourceBuild(this._asyncIterator.then(source));
         } else {
-          return fromSourceBuild$1(this.sourceBuild.then(source));
+          return fromSourceBuild$1(this._asyncIterator.then(source));
         }
-      } else return fromSourceBuild$1(this.sourceBuild.then());
+      } else return fromSourceBuild$1(this._asyncIterator.then());
     }
   }, {
-    key: "asyncIterator",
-    value: function asyncIterator(ctx) {
-      return this.sourceBuild.asyncIterator(ctx);
+    key: "iterator",
+    value: function iterator(ctx) {
+      return this._asyncIterator.iterator(ctx);
     }
   }, {
     key: "onErrorResume",
     value: function onErrorResume(errorType, fn) {
-      return fromSourceBuild$1(this.sourceBuild.onErrorResume(errorType, fn));
+      return fromSourceBuild$1(this._asyncIterator.onErrorResume(errorType, fn));
     }
   }, {
     key: "doOnNext",
     value: function doOnNext(handler) {
-      return fromSourceBuild$1(this.sourceBuild.doOnNext(handler));
+      return fromSourceBuild$1(this._asyncIterator.doOnNext(handler));
     }
   }, {
     key: "doOnError",
     value: function doOnError(handler) {
-      return fromSourceBuild$1(this.sourceBuild.doOnError(handler));
+      return fromSourceBuild$1(this._asyncIterator.doOnError(handler));
     }
   }, {
     key: "switchIfEmpty",
     value: function switchIfEmpty(source) {
-      return fromSourceBuild$1(this.sourceBuild.switchIfEmpty(source));
+      return fromSourceBuild$1(this._asyncIterator.switchIfEmpty(source));
     }
   }, {
     key: "defaultIfEmpty",
     value: function defaultIfEmpty(value) {
-      return fromSourceBuild$1(this.sourceBuild.defaultIfEmpty(value));
+      return fromSourceBuild$1(this._asyncIterator.defaultIfEmpty(value));
     }
   }, {
     key: "zipWhen",
     value: function zipWhen() {
-      var _this$sourceBuild;
-      return fromSourceBuild$1((_this$sourceBuild = this.sourceBuild).zipWhen.apply(_this$sourceBuild, arguments));
+      var _this$_asyncIterator;
+      return fromSourceBuild$1((_this$_asyncIterator = this._asyncIterator).zipWhen.apply(_this$_asyncIterator, arguments));
     }
   }, {
     key: "zip",
     value: function zip() {
-      var _this$sourceBuild2;
-      return fromSourceBuild$1((_this$sourceBuild2 = this.sourceBuild).zip.apply(_this$sourceBuild2, arguments));
+      var _this$_asyncIterator2;
+      return fromSourceBuild$1((_this$_asyncIterator2 = this._asyncIterator).zip.apply(_this$_asyncIterator2, arguments));
     }
   }, {
     key: "pipe",
     value: function pipe(fn) {
-      return fromSourceBuild$1(this.sourceBuild.pipe(fn));
+      return fromSourceBuild$1(this._asyncIterator.pipe(fn));
     }
   }, {
     key: "flatPipe",
     value: function flatPipe(fn) {
-      return fromSourceBuild$1(this.sourceBuild.flatPipe(fn));
+      return fromSourceBuild$1(this._asyncIterator.flatPipe(fn));
     }
   }, {
     key: "thenReturn",
     value: function thenReturn(value) {
-      return fromSourceBuild$1(this.sourceBuild.thenReturn(value));
+      return fromSourceBuild$1(this._asyncIterator.thenReturn(value));
     }
   }, {
     key: "filter",
     value: function filter(fn) {
-      return fromSourceBuild$1(this.sourceBuild.filter(fn));
+      return fromSourceBuild$1(this._asyncIterator.filter(fn));
     }
   }, {
     key: "flatFilter",
     value: function flatFilter(fn) {
-      return fromSourceBuild$1(this.sourceBuild.flatFilter(fn));
+      return fromSourceBuild$1(this._asyncIterator.flatFilter(fn));
     }
   }, {
     key: "blockFirst",
     value: function blockFirst(contextManager) {
-      return this.sourceBuild.blockFirst(contextManager !== null && contextManager !== void 0 ? contextManager : new RakunContextManagerImpl());
+      return this._asyncIterator.blockFirst(contextManager !== null && contextManager !== void 0 ? contextManager : new RakunContextManagerImpl());
     }
   }, {
     key: "block",
     value: function block(contextManager) {
-      return this.sourceBuild.block(contextManager);
+      return this._asyncIterator.block(contextManager);
     }
   }]);
   return RakunMonoImpl;
 }();
 
-var fromSourceBuild$1 = function fromSourceBuild(sourceBuild) {
-  return new RakunMonoImpl(sourceBuild);
+var fromSourceBuild = function fromSourceBuild(sourceBuild) {
+  return new RakunFluxImpl(sourceBuild);
 };
-
+var RakunStaticFluxImpl = /*#__PURE__*/function () {
+  function RakunStaticFluxImpl() {
+    _classCallCheck(this, RakunStaticFluxImpl);
+    _defineProperty(this, "fromSourceBuild", fromSourceBuild);
+  }
+  _createClass(RakunStaticFluxImpl, [{
+    key: "fromCallback",
+    value: function fromCallback() {
+      return fromSourceBuild(asyncIterator.fromCallback.apply(asyncIterator, arguments));
+    }
+  }, {
+    key: "fromPromise",
+    value: function fromPromise(promise) {
+      return fromSourceBuild(asyncIterator.fromArray(promise));
+    }
+  }, {
+    key: "fromArray",
+    value: function fromArray(values) {
+      return fromSourceBuild(asyncIterator.fromArray(values));
+    }
+  }, {
+    key: "just",
+    value: function just() {
+      for (var _len = arguments.length, values = new Array(_len), _key = 0; _key < _len; _key++) {
+        values[_key] = arguments[_key];
+      }
+      return fromSourceBuild(asyncIterator.fromArray(values));
+    }
+  }]);
+  return RakunStaticFluxImpl;
+}();
 var RakunFluxImpl = /*#__PURE__*/function () {
-  function RakunFluxImpl(sourceBuild) {
+  function RakunFluxImpl(_asyncIterator) {
     _classCallCheck(this, RakunFluxImpl);
-    this.sourceBuild = sourceBuild;
+    this._asyncIterator = _asyncIterator;
     _defineProperty(this, WrappedValue_OPAQUE, 'flux');
   }
   _createClass(RakunFluxImpl, [{
@@ -1486,23 +1567,23 @@ var RakunFluxImpl = /*#__PURE__*/function () {
     value: function then(source) {
       if (source) {
         if (source[WrappedValue_OPAQUE] == 'mono') {
-          return fromSourceBuild$1(this.sourceBuild.then(source));
+          return fromSourceBuild$1(this._asyncIterator.then(source));
         } else {
-          return fromSourceBuild(this.sourceBuild.then(source));
+          return fromSourceBuild(this._asyncIterator.then(source));
         }
-      } else return fromSourceBuild$1(this.sourceBuild.then());
+      } else return fromSourceBuild$1(this._asyncIterator.then());
     }
   }, {
     key: "array",
     value: function array() {
       var _this = this;
-      return fromSourceBuild$1(sourceBuild$1.fromCallback( /*#__PURE__*/function () {
+      return fromSourceBuild$1(asyncIterator.fromCallback( /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(ctx) {
           return regenerator.wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.sourceBuild.block(ctx);
+                return _this._asyncIterator.block(ctx);
               case 2:
                 _context.t0 = _context.sent;
                 return _context.abrupt("return", [_context.t0]);
@@ -1520,172 +1601,87 @@ var RakunFluxImpl = /*#__PURE__*/function () {
   }, {
     key: "switchIfEmpty",
     value: function switchIfEmpty(source) {
-      return fromSourceBuild(this.sourceBuild.switchIfEmpty(source));
+      return fromSourceBuild(this._asyncIterator.switchIfEmpty(source));
     }
   }, {
     key: "defaultIfEmpty",
     value: function defaultIfEmpty(value) {
-      return fromSourceBuild(this.sourceBuild.defaultIfEmpty(value));
+      return fromSourceBuild(this._asyncIterator.defaultIfEmpty(value));
     }
   }, {
     key: "onErrorResume",
     value: function onErrorResume(errorType, fn) {
-      return fromSourceBuild(this.sourceBuild.onErrorResume(errorType, fn));
+      return fromSourceBuild(this._asyncIterator.onErrorResume(errorType, fn));
     }
   }, {
     key: "doOnNext",
     value: function doOnNext(handler) {
-      return fromSourceBuild(this.sourceBuild.doOnNext(handler));
+      return fromSourceBuild(this._asyncIterator.doOnNext(handler));
     }
   }, {
     key: "doOnError",
     value: function doOnError(handler) {
-      return fromSourceBuild(this.sourceBuild.doOnError(handler));
+      return fromSourceBuild(this._asyncIterator.doOnError(handler));
     }
   }, {
     key: "zipWhen",
     value: function zipWhen() {
-      var _this$sourceBuild;
-      return fromSourceBuild((_this$sourceBuild = this.sourceBuild).zipWhen.apply(_this$sourceBuild, arguments));
+      var _this$_asyncIterator;
+      return fromSourceBuild((_this$_asyncIterator = this._asyncIterator).zipWhen.apply(_this$_asyncIterator, arguments));
     }
   }, {
     key: "zip",
     value: function zip() {
-      var _this$sourceBuild2;
-      return fromSourceBuild((_this$sourceBuild2 = this.sourceBuild).zip.apply(_this$sourceBuild2, arguments));
+      var _this$_asyncIterator2;
+      return fromSourceBuild((_this$_asyncIterator2 = this._asyncIterator).zip.apply(_this$_asyncIterator2, arguments));
     }
   }, {
     key: "pipe",
     value: function pipe(fn) {
-      return fromSourceBuild(this.sourceBuild.pipe(fn));
+      return fromSourceBuild(this._asyncIterator.pipe(fn));
     }
   }, {
     key: "flatPipe",
     value: function flatPipe(fn) {
-      return fromSourceBuild(this.sourceBuild.flatPipe(fn));
+      return fromSourceBuild(this._asyncIterator.flatPipe(fn));
     }
   }, {
     key: "filter",
     value: function filter(fn) {
-      return fromSourceBuild(this.sourceBuild.filter(fn));
+      return fromSourceBuild(this._asyncIterator.filter(fn));
     }
   }, {
     key: "flatFilter",
     value: function flatFilter(fn) {
-      return fromSourceBuild(this.sourceBuild.flatFilter(fn));
+      return fromSourceBuild(this._asyncIterator.flatFilter(fn));
     }
   }, {
     key: "thenReturn",
     value: function thenReturn(value) {
-      return fromSourceBuild(this.sourceBuild.thenReturn(value));
+      return fromSourceBuild(this._asyncIterator.thenReturn(value));
     }
   }, {
     key: "blockFirst",
     value: function blockFirst(contextManager) {
-      return this.sourceBuild.blockFirst(contextManager !== null && contextManager !== void 0 ? contextManager : new RakunContextManagerImpl());
+      return this._asyncIterator.blockFirst(contextManager !== null && contextManager !== void 0 ? contextManager : new RakunContextManagerImpl());
     }
   }, {
     key: "block",
     value: function block(contextManager) {
-      return this.sourceBuild.block(contextManager);
+      return this._asyncIterator.block(contextManager);
     }
   }, {
-    key: "asyncIterator",
-    value: function asyncIterator(ctx) {
-      return this.sourceBuild.asyncIterator(ctx);
+    key: "iterator",
+    value: function iterator(ctx) {
+      return this._asyncIterator.iterator(ctx);
     }
   }]);
   return RakunFluxImpl;
 }();
 
-var fromSourceBuild = function fromSourceBuild(sourceBuild) {
-  return new RakunFluxImpl(sourceBuild);
-};
-
-var RakunStaticFluxImpl = /*#__PURE__*/function () {
-  function RakunStaticFluxImpl() {
-    _classCallCheck(this, RakunStaticFluxImpl);
-    _defineProperty(this, "fromSourceBuild", fromSourceBuild);
-  }
-  _createClass(RakunStaticFluxImpl, [{
-    key: "fromCallback",
-    value: function fromCallback() {
-      return fromSourceBuild(sourceBuild$1.fromCallback.apply(sourceBuild$1, arguments));
-    }
-  }, {
-    key: "fromPromise",
-    value: function fromPromise(promise) {
-      return fromSourceBuild(sourceBuild$1.fromArray(promise));
-    }
-  }, {
-    key: "fromArray",
-    value: function fromArray(values) {
-      return fromSourceBuild(sourceBuild$1.fromArray(values));
-    }
-  }, {
-    key: "just",
-    value: function just() {
-      for (var _len = arguments.length, values = new Array(_len), _key = 0; _key < _len; _key++) {
-        values[_key] = arguments[_key];
-      }
-      return fromSourceBuild(sourceBuild$1.fromArray(values));
-    }
-  }]);
-  return RakunStaticFluxImpl;
-}();
 var flux$1 = new RakunStaticFluxImpl();
 
-var StaticMonoImpl = /*#__PURE__*/function () {
-  function StaticMonoImpl() {
-    _classCallCheck(this, StaticMonoImpl);
-    _defineProperty(this, "fromSourceBuild", fromSourceBuild$1);
-  }
-  _createClass(StaticMonoImpl, [{
-    key: "fromCallback",
-    value: function fromCallback() {
-      for (var _len = arguments.length, callbacks = new Array(_len), _key = 0; _key < _len; _key++) {
-        callbacks[_key] = arguments[_key];
-      }
-      return fromSourceBuild$1(sourceBuild$1.fromCallback.apply(sourceBuild$1, _toConsumableArray(callbacks.map(function (callback) {
-        return function (ctx) {
-          return Promise.all([callback(ctx)]);
-        };
-      }))));
-    }
-  }, {
-    key: "then",
-    value: function then() {
-      return this.fromSourceBuild(sourceBuild$1.then());
-    }
-  }, {
-    key: "empty",
-    value: function empty() {
-      return this.fromSourceBuild(sourceBuild$1.empty());
-    }
-  }, {
-    key: "zip",
-    value: function zip() {
-      return this.fromSourceBuild(sourceBuild$1.zip.apply(sourceBuild$1, arguments));
-    }
-  }, {
-    key: "just",
-    value: function just(value) {
-      return this.fromSourceBuild(sourceBuild$1.just(value));
-    }
-  }, {
-    key: "fromPromise",
-    value: function fromPromise(promise) {
-      return this.fromSourceBuild(sourceBuild$1.just(promise));
-    }
-  }, {
-    key: "error",
-    value: function error(_error) {
-      return this.fromSourceBuild(sourceBuild$1.error(_error));
-    }
-  }]);
-  return StaticMonoImpl;
-}();
-var mono$1 = new StaticMonoImpl();
+var mono$1 = new RakunStaticMonoImpl();
 
 var RakunContextImpl = /*#__PURE__*/function () {
   function RakunContextImpl(defualtValue) {
@@ -1730,11 +1726,11 @@ var index = {
   flux: flux$1,
   mono: mono$1,
   context: context$1,
-  sourceBuild: sourceBuild$1
+  sourceBuild: asyncIterator
 };
 var flux = flux$1;
 var mono = mono$1;
 var context = context$1;
-var sourceBuild = sourceBuild$1;
+var sourceBuild = asyncIterator;
 
-export { RakunContextImpl, RakunFluxImpl, RakunMonoImpl, RakunSourceBuildImpl, Void, WrappedValue_OPAQUE, context, index as default, flux, mono, sourceBuild };
+export { RakunContextImpl, Void, WrappedValue_OPAQUE, context, index as default, flux, mono, sourceBuild };

@@ -1,3 +1,3 @@
-import { RakunSourceBuild } from "../sourceBuild";
+import { RakunAsyncIterator } from "../sourceBuild";
 import { RakunFlux } from "./interface";
-export declare const fromSourceBuild: <T>(sourceBuild: RakunSourceBuild<T>) => RakunFlux<T>;
+export declare const fromSourceBuild: <T>(sourceBuild: RakunAsyncIterator<T>) => RakunFlux<T>;

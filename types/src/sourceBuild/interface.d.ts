@@ -16,28 +16,28 @@ export type ReturnUnzipWhen<T> = {
 export type RakunCallback<T> = {
     (contextManager: RakunContextManager): T;
 };
-export interface RakunSourceBuild<T> extends RakunSource<T> {
-    flatFilter(fn: (value: T) => RakunSource<boolean>): RakunSourceBuild<T>;
-    filter(fn: (value: T) => boolean): RakunSourceBuild<T>;
-    thenReturn<R>(value: R): RakunSourceBuild<R>;
-    then<R>(source: RakunSource<R>): RakunSourceBuild<R>;
-    then(): RakunSourceBuild<typeof Void>;
-    zip<R extends RakunSource<any>[]>(...monoArray: R): RakunSourceBuild<[T, ...ReturnUnzip<R>]>;
-    zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunSourceBuild<[T, ...ReturnUnzipWhen<R>]>;
-    pipe<R>(fn: (value: T) => R): RakunSourceBuild<R>;
-    flatPipe<R>(fn: (value: T) => RakunSource<R>): RakunSourceBuild<R>;
-    doOnNext(handler: (value: T) => any): RakunSourceBuild<T>;
-    doOnError(handler: (error: any) => any): RakunSourceBuild<T>;
-    switchIfEmpty(source: RakunSource<T>): RakunSourceBuild<T>;
-    defaultIfEmpty(value: T): RakunSourceBuild<T>;
-    onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSource<T>): RakunSourceBuild<T>;
+export interface RakunAsyncIterator<T> extends RakunSource<T> {
+    flatFilter(fn: (value: T) => RakunSource<boolean>): RakunAsyncIterator<T>;
+    filter(fn: (value: T) => boolean): RakunAsyncIterator<T>;
+    thenReturn<R>(value: R): RakunAsyncIterator<R>;
+    then<R>(source: RakunSource<R>): RakunAsyncIterator<R>;
+    then(): RakunAsyncIterator<typeof Void>;
+    zip<R extends RakunSource<any>[]>(...monoArray: R): RakunAsyncIterator<[T, ...ReturnUnzip<R>]>;
+    zipWhen<R extends ((value: T) => RakunSource<any>)[]>(...monoArrayFn: R): RakunAsyncIterator<[T, ...ReturnUnzipWhen<R>]>;
+    pipe<R>(fn: (value: T) => R): RakunAsyncIterator<R>;
+    flatPipe<R>(fn: (value: T) => RakunSource<R>): RakunAsyncIterator<R>;
+    doOnNext(handler: (value: T) => any): RakunAsyncIterator<T>;
+    doOnError(handler: (error: any) => any): RakunAsyncIterator<T>;
+    switchIfEmpty(source: RakunSource<T>): RakunAsyncIterator<T>;
+    defaultIfEmpty(value: T): RakunAsyncIterator<T>;
+    onErrorResume<E>(errorType: ErrorConstructor<E>, fn: (value: E) => RakunSource<T>): RakunAsyncIterator<T>;
 }
 export type RakunStaticSourceBuild = {
-    then(): RakunSourceBuild<typeof Void>;
-    empty<T>(): RakunSourceBuild<T>;
-    zip<T extends RakunSource<any>[]>(...monoArray: T): RakunSourceBuild<ReturnUnzip<T>>;
-    just<T>(...promises: Promise<T>[] | T[]): RakunSourceBuild<T>;
-    error<T>(error: any): RakunSourceBuild<T>;
-    fromArray<R>(values: R[] | Promise<R[]>): RakunSourceBuild<R>;
-    fromCallback<T>(...callbacks: RakunCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunSourceBuild<T>;
+    then(): RakunAsyncIterator<typeof Void>;
+    empty<T>(): RakunAsyncIterator<T>;
+    zip<T extends RakunSource<any>[]>(...monoArray: T): RakunAsyncIterator<ReturnUnzip<T>>;
+    just<T>(...promises: Promise<T>[] | T[]): RakunAsyncIterator<T>;
+    error<T>(error: any): RakunAsyncIterator<T>;
+    fromArray<R>(values: R[] | Promise<R[]>): RakunAsyncIterator<R>;
+    fromCallback<T>(...callbacks: RakunCallback<T[] | Promise<T[]> | Promise<T>[]>[]): RakunAsyncIterator<T>;
 };
