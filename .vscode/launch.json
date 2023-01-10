@@ -13,7 +13,7 @@
             "args": [
                 "--config",
                 "${workspaceFolder}/scripts/jest/jest.config.js",
-                "src/__tests__/flux/defaultIfEmpty.test.ts"
+                "src/__tests__/flux/onErrorResume.test.ts"
             ],
             "console": "integratedTerminal",
             "disableOptimisticBPs": true,

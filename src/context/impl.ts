@@ -8,9 +8,9 @@ export class RakunContextImpl<T> implements RakunContext<T>{
     constructor(public defualtValue: T) {
     }
     get(): RakunMono<T> {
-        return mono.fromCallback<T>((ctx) => ctx.getValue(this));
+        return mono.fromPromiseCallback<T>((ctx) => [ctx.getValue(this)]);
     }
     define(value: T): RakunMono<typeof Void> {
-        return mono.fromCallback<typeof Void>((ctx) => ctx.setValue(this, value));
+        return mono.fromPromiseCallback<typeof Void>((ctx) => [ctx.setValue(this, value)]);
     }
 }

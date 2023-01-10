@@ -1,20 +1,17 @@
 import { RakunContextManager } from "./context"
-import { WrappedValue_OPAQUE } from "./wrapped"
+
+
+
+export type RakunExec<T> = RakunContextManagerCallback<AsyncIterable<T> | Iterable<T>>
 
 export type RakunContextManagerCallback<T> = {
     (contextManager: RakunContextManager): T
 }
 
-export type RakunSource<T> = RakunAsyncIteratorSource<T>
-
-export type RakunAsyncIteratorSource<T> = {
-    iterator(ctx: RakunContextManager): AsyncIterator<T>
-    readonly [WrappedValue_OPAQUE]: string
-}
-
-export interface RakunIteratorSource<T> {
-    iterator(ctx: RakunContextManager): Iterator<T>
-    readonly [WrappedValue_OPAQUE]: string
+export type RakunSource<T> = {
+    exec(ctx: RakunContextManager): AsyncIterable<T> | Iterable<T>
+    blockFirst(contextManager: RakunContextManager): Promise<T> | T
+    block(contextManager: RakunContextManager): Promise<T[]> | T[]
 }
 
 
