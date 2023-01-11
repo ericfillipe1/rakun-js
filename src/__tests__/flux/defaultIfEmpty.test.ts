@@ -6,8 +6,7 @@ describe('defaultIfEmpty', () => {
             .filter(item => item == 20)
             .defaultIfEmpty(54)
             .block();
-        expect(result).resolves.toStrictEqual([54]);
-
+        expect(result).toStrictEqual([54]);
     });
 
 });

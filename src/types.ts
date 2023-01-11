@@ -1,17 +1,38 @@
 import { RakunContextManager } from "./context"
+import { RakunIterator } from "./iterator"
 
 
+export type RakunNextResult<T> = RakunNextResultValues<T> | RakunNextResultDone | RakunNextResultPromise<T>
 
-export type RakunExec<T> = RakunContextManagerCallback<AsyncIterable<T> | Iterable<T>>
-
-export type RakunContextManagerCallback<T> = {
-    (contextManager: RakunContextManager): T
+export type RakunNextResultValues<T> = {
+    type: 'values',
+    values: T[]
 }
 
-export type RakunSource<T> = {
-    exec(ctx: RakunContextManager): AsyncIterable<T> | Iterable<T>
-    blockFirst(contextManager: RakunContextManager): Promise<T> | T
-    block(contextManager: RakunContextManager): Promise<T[]> | T[]
+
+export type RakunNextResultDone = {
+    type: 'done'
+}
+
+
+
+export type RakunNextResultPromise<T> = {
+    type: 'promise',
+    promise: Promise<T[]>
+}
+
+export interface RakunIteratorSource<T> {
+    iterator: RakunIterator<T>
+}
+
+export type ReturnUnzip<T> = { [K in keyof T]: T[K] extends RakunIteratorSource<infer R> ? R : never }
+export type ReturnUnzipWhen<T> = { [K in keyof T]: [K] extends (value: any) => RakunIteratorSource<infer R> ? R : never }
+export type Unzip<T, R extends RakunIteratorSource<any>[]> = [T, ...ReturnUnzip<R>]
+
+
+export type RakunNext<T> = (ctx: RakunContextManager) => RakunNextResult<T>
+export type RakunContextManagerCallback<T> = {
+    (contextManager: RakunContextManager): T
 }
 
 

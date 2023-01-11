@@ -1,12 +1,12 @@
 import _flux from "./flux";
 import _mono from "./mono";
-import _sourceBuild from "./asyncIterator";
+import _sourceBuild from "./iterable";
 import _context from "./context";
 export * from "./flux";
 export * from "./mono";
 export * from "./wrapped";
 export * from "./context";
-export * from "./asyncIterator";
+export * from "./iterable";
 export * from "./types";
 
 export default {
